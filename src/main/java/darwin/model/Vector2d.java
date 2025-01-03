@@ -18,6 +18,7 @@ public class Vector2d {
     public String toString() {
         return "(" + this.x + "," + this.y + ")";
     }
+
     public boolean precedes(Vector2d vector) {
         return this.x <= vector.getX() && this.y <= vector.getY();
     }
@@ -25,12 +26,15 @@ public class Vector2d {
     public boolean follows(Vector2d vector) {
         return this.x >= vector.getX() && this.y >= vector.getY();
     }
+
     public Vector2d add(Vector2d vector) {
         return new Vector2d(x + vector.getX(), y + vector.getY());
     }
+
     public Vector2d subtract(Vector2d vector) {
         return new Vector2d(x - vector.getX(), y - vector.getY());
     }
+
     public Vector2d upperRight(Vector2d vector) {
         return new Vector2d( Math.max(x, vector.getX()), Math.max(y, vector.getY()));
     }
