@@ -1,6 +1,8 @@
 package darwin.model;
 
-public interface WorldMap {
+import darwin.model.animal.AbstractAnimal;
+
+public interface WorldMap  {
     public void place(AbstractAnimal animal, Vector2d position);
 
     public  void move (AbstractAnimal animal);

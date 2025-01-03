@@ -1,6 +1,6 @@
 package darwin;
 
-import darwin.model.AbstractAnimal;
+import darwin.model.animal.AbstractAnimal;
 
 import java.util.ArrayList;
 

@@ -1,5 +1,6 @@
 package darwin.model;
 
+import darwin.model.animal.AbstractAnimal;
 import darwin.util.Boundary;
 
 import java.util.ArrayList;
