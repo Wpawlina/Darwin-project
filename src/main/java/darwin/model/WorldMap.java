@@ -1,6 +1,6 @@
 package darwin.model;
 
-public interface WorldMap {
+public interface WorldMap extends MoveValidator{
     public void place(AbstractAnimal animal, Vector2d position);
 
     public  void move (AbstractAnimal animal);
@@ -19,13 +19,4 @@ public interface WorldMap {
     public int countPlant();
 
     public int countEmptyPositions();
-
-    public boolean canMoveTo(Vector2d position);
-
-
-
-
-
-
-
 }
