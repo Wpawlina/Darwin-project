@@ -16,7 +16,7 @@ public class AnimalProperties {
     private Directions direction;
     private int energy;
     private int plantsEaten=0;
-    private final Vector2d position;
+    private  Vector2d position;
     private AnimalState state;
 
 
@@ -91,5 +91,9 @@ public class AnimalProperties {
 
     void setPlantsEaten(int plantsEaten) {
         this.plantsEaten = plantsEaten;
+    }
+
+    void setPosition(Vector2d newPositionInMap) {
+        this.position=newPositionInMap;
     }
 }
