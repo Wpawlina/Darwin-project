@@ -1,18 +1,22 @@
 package darwin.model;
 
 import darwin.model.animal.AbstractAnimal;
+import darwin.util.AnimalState;
 import darwin.util.Boundary;
+import darwin.util.Directions;
+import darwin.util.MyRandom;
 
+import javax.swing.plaf.multi.MultiRootPaneUI;
 import java.util.*;
 
 
 abstract public class AbstractMap implements WorldMap{
-    private final Boundary mapBoundary;
-    private final Boundary jungleBoundary;
-    private final MapInitialProperties mapInitialProperties;
+    protected final Boundary mapBoundary;
+    protected final Boundary jungleBoundary;
+    protected final MapInitialProperties mapInitialProperties;
 
-    private final  HashMap<Vector2d, HashSet<AbstractAnimal>> animals = new HashMap<>();
-    private final  HashMap<Vector2d, Plant> plants = new HashMap<>();
+    protected final  HashMap<Vector2d, HashSet<AbstractAnimal>> animals = new HashMap<>();
+    protected final  HashMap<Vector2d, Plant> plants = new HashMap<>();
 
     private int plantCount = 0;
     private int emptyPositionsCount = 0;
@@ -30,18 +34,24 @@ abstract public class AbstractMap implements WorldMap{
             }
             else{
                 animals.put(position, new HashSet<>(Set.of(animal)));
+                emptyPositionsCount ++;
             }
+        }
+    }
+
+    public void place(Plant plant, Vector2d position){
+        if (!plants.containsKey(position)){
+            plants.put(position, plant);
         }
     }
 
     @Override
     public void move(AbstractAnimal animal) {
-        Vector2d oldPosition = animal.getPosition();
-        Vector2d newPosition = oldPosition + animal.getProperties().direction.toUnitVector();
-        Vector2d correctedPosition = correctPosition(newPosition);
-
-        animals.get(oldPosition).remove(animal);
-        place(animal, correctedPosition);
+        Vector2d old_p = animal.getPosition();
+        animals.get(old_p).remove(animal);
+        animal.move(this);
+        Vector2d new_p = animal.getPosition();
+        animals.get(new_p).add(animal);
     }
 
     @Override
@@ -50,72 +60,157 @@ abstract public class AbstractMap implements WorldMap{
             Vector2d position = plant.getPosition();
             HashSet<AbstractAnimal> willing = animals.get(position);
             if (!willing.isEmpty()) {
+                plants.remove(plant.getPosition());
+                plantCount --;
                 int no = willing.size();
+                Iterator<AbstractAnimal> iter = willing.iterator();
                 if (no == 1){
+                    iter.next().eat(mapInitialProperties.plantEnergy());
                 }
                 else {
-
+                    conflict(iter).eat(mapInitialProperties.plantEnergy());
                 }
             }
         }
     }
 
-    public AbstractAnimal conflict(AbstractAnimal[] willing) {
-        return willing[0];//niezaimplementowane
+    private AbstractAnimal conflict(Iterator<AbstractAnimal> iter) {
+        int max_energy = 0;
+        int max_age = 0;
+        int max_children = 0;
+        ArrayList<AbstractAnimal> winners = new ArrayList<>();
+        while (iter.hasNext()){
+            AbstractAnimal rival = iter.next();
+            int rival_energy = rival.getProperties().getEnergy();
+            if (rival_energy >= max_energy) {
+                max_energy = rival_energy;
+                int rival_age = rival.getProperties().getAge();
+                if (rival_age >= max_age){
+                    max_age = rival_age;
+                    int rival_children = rival.getProperties().getChildren().size();
+                    if (rival_children >= max_children){
+                        max_children = rival_children;
+                        winners.add(rival);
+                    }
+                }
+            }
+        }
+        MyRandom myRandom = new MyRandom();
+        return winners.get(myRandom.RandomInt(0, winners.size()));
     }
 
     @Override
     public void reproduce(int min, int max, int sufficientEnergy, int energyCost) {
-
+        for(HashSet<AbstractAnimal> space : animals.values()){
+            int spaceSize = space.size();
+            if (spaceSize > 1){
+                Iterator<AbstractAnimal> iter = space.iterator();
+                while (iter.hasNext()){
+                    AbstractAnimal mother = iter.next();
+                    int motherEnergy = mother.getProperties().getEnergy();
+                    if (motherEnergy >= sufficientEnergy && iter.hasNext()){
+                        AbstractAnimal father = iter.next();
+                        int fatherEnergy = father.getProperties().getEnergy();
+                        if (fatherEnergy >= sufficientEnergy) {
+                            Vector2d position = father.getPosition();
+                            AbstractAnimal child = mother.createChildren(father, energyCost, min, max);
+                            this.place(child, position);
+                        }
+                    }
+                }
+            }
+        }
     }
+
 
     @Override
     public void subtractEnergy() {
-
+        for(HashSet<AbstractAnimal> space : animals.values()){
+            for(AbstractAnimal animal : space){
+                animal.subtractEnergy(1);
+                if (animal.getProperties().getEnergy() <= 0) {
+                    animal.setState(AnimalState.RECENTLY_DIED);
+                }
+            }
+        }
     }
 
     @Override
     public void spawnPlants() {
+        spawnPlantNo(mapInitialProperties.spawnPlantPerDay());
+    }
 
+    private void spawnPlantNo(int no){
+        MyRandom random = new MyRandom();
+        ArrayList<ArrayList<Vector2d>> possible = partition(mapBoundary, jungleBoundary);
+        ArrayList<Vector2d> possible_fertile = possible.get(0);
+        ArrayList<Vector2d> possible_infertile = possible.get(1);
+        for(int i = 0; i < no; i++){
+            float firstDraw = random.RandomFrac();
+            if(firstDraw <0.2){
+               int secondDraw = random.RandomInt(0, possible_fertile.size());
+               Plant newplant = new Plant(possible_fertile.get(secondDraw));
+               place(newplant, newplant.getPosition());
+            }
+            else {
+                int secondDraw = random.RandomInt(0, possible_infertile.size());
+                Plant newplant = new Plant(possible_infertile.get(secondDraw));
+                place(newplant, newplant.getPosition());
+            }
+        }
+    }
+
+    private ArrayList<ArrayList<Vector2d>> partition(Boundary normal, Boundary jungle){
+        ArrayList<ArrayList<Vector2d>> result = new ArrayList<>();
+        ArrayList<Vector2d> fertile = new ArrayList<>();
+        ArrayList<Vector2d> infertile = new ArrayList<>();
+
+        HashSet<Vector2d> spaces = normal.generateSpaces();
+        HashSet<Vector2d> fertile_spaces = jungle.generateSpaces();
+
+        for (Vector2d space : spaces){
+            if (!plants.containsKey(space)){
+                if(fertile_spaces.contains(space)){
+                    fertile.add(space);
+                }
+                else infertile.add(space);
+            }
+        }
+
+        result.add(fertile);
+        result.add(infertile);
+        return result;
     }
 
     @Override
     public int countPlant() {
-        return 0;
+        return plants.size();
     }
 
     @Override
     public int countEmptyPositions() {
-        return 0;
+        return mapBoundary.size() - countPlant();
     }
 
     @Override
     public boolean canMoveTo(Vector2d position){
-        return (this.mapBoundary.lowerLeft().getX() <= position.getX()
-                && position.getX() < this.mapBoundary.upperRight().getX()
-                && this.mapBoundary.lowerLeft().getY() <= position.getY()
+        return (this.mapBoundary.lowerLeft().getY() <= position.getY()
                 && position.getY() < this.mapBoundary.upperRight().getY());
     }
 
     @Override
     public Vector2d correctPosition(Vector2d position){
-        if (!canMoveTo(position)){
-            int x = position.getX();
-            int y = position.getY();
-            int left = mapBoundary.lowerLeft().getX();
-            int right = mapBoundary.upperRight().getX();
-            int top = mapBoundary.upperRight().getY();
-            int bottom = mapBoundary.lowerLeft().getY();
+        int x = position.getX();
+        int y = position.getY();
+        int left = mapBoundary.lowerLeft().getX();
+        int right = mapBoundary.upperRight().getX();
+        int top = mapBoundary.upperRight().getY();
+        int bottom = mapBoundary.lowerLeft().getY();
 
-            if (x < left) x = x - left + right;
-            else if (x >= right) x = x - right + left;
+        if (x < left) x = x - left + right;
+        else if (x >= right) x = x - right + left;
 
-            if (x < bottom) x = x - bottom + top;
-            else if (x >= top) x = x - top + bottom;
-
-            position = new Vector2d(x, y);
-        }
-        return position;
+        return new Vector2d(x, y);
     }
 
 

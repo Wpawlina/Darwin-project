@@ -1,5 +1,6 @@
 package darwin.model.animal;
 
+import darwin.model.MoveValidator;
 import darwin.model.Vector2d;
 import darwin.model.WorldElement;
 import darwin.util.AnimalState;

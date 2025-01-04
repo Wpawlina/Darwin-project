@@ -57,7 +57,9 @@ public class AnimalProperties {
         return energy;
     }
 
+    public int getAge(){return age;}
 
+    public AnimalState getState() {return state;}
 
     public int getPlantsEaten() {
         return plantsEaten;

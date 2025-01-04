@@ -1,5 +1,7 @@
 package darwin.model;
 
+import darwin.model.animal.AbstractAnimal;
+
 public interface WorldMap extends MoveValidator{
     public void place(AbstractAnimal animal, Vector2d position);
 
