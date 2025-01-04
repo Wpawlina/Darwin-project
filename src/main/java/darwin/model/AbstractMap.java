@@ -135,12 +135,12 @@ abstract public class AbstractMap implements WorldMap{
 
     @Override
     public void spawnPlants() {
-        spawnPlantNo(mapInitialProperties.spawnPlantPerDay());
+        ArrayList<ArrayList<Vector2d>> possible = partition(mapBoundary.generateSpaces(), jungleBoundary.generateSpaces());
+        spawnPlantNo(mapInitialProperties.spawnPlantPerDay(), possible);
     }
 
-    private void spawnPlantNo(int no){
+    protected void spawnPlantNo(int no, ArrayList<ArrayList<Vector2d>> possible){
         MyRandom random = new MyRandom();
-        ArrayList<ArrayList<Vector2d>> possible = partition(mapBoundary, jungleBoundary);
         ArrayList<Vector2d> possible_fertile = possible.get(0);
         ArrayList<Vector2d> possible_infertile = possible.get(1);
         for(int i = 0; i < no; i++){
@@ -158,13 +158,10 @@ abstract public class AbstractMap implements WorldMap{
         }
     }
 
-    private ArrayList<ArrayList<Vector2d>> partition(Boundary normal, Boundary jungle){
+    protected ArrayList<ArrayList<Vector2d>> partition(HashSet<Vector2d> spaces, HashSet<Vector2d> fertile_spaces){
         ArrayList<ArrayList<Vector2d>> result = new ArrayList<>();
         ArrayList<Vector2d> fertile = new ArrayList<>();
         ArrayList<Vector2d> infertile = new ArrayList<>();
-
-        HashSet<Vector2d> spaces = normal.generateSpaces();
-        HashSet<Vector2d> fertile_spaces = jungle.generateSpaces();
 
         for (Vector2d space : spaces){
             if (!plants.containsKey(space)){
