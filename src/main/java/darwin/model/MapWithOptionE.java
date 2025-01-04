@@ -8,8 +8,6 @@ import darwin.util.MyRandom;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class MapWithOptionE extends  AbstractMap{
     public MapWithOptionE(MapInitialProperties mapInitialProperties, Boundary mapBoundary, Boundary jungleBoundary){

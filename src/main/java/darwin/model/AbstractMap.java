@@ -3,10 +3,8 @@ package darwin.model;
 import darwin.model.animal.AbstractAnimal;
 import darwin.util.AnimalState;
 import darwin.util.Boundary;
-import darwin.util.Directions;
 import darwin.util.MyRandom;
 
-import javax.swing.plaf.multi.MultiRootPaneUI;
 import java.util.*;
 
 

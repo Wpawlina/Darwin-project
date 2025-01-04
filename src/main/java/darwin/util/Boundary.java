@@ -2,9 +2,7 @@ package darwin.util;
 
 import darwin.model.Vector2d;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
     public boolean contains(Vector2d position){
