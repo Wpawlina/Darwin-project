@@ -2,8 +2,6 @@ package darwin;
 
 import darwin.model.*;
 import darwin.model.animal.AbstractAnimal;
-import darwin.model.animal.Animal;
-import darwin.model.animal.AnimalProperties;
 import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.SimulationConfig;

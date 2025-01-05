@@ -29,6 +29,9 @@ public class MapWithOptionE extends  AbstractMap{
                         result.add(candidate);
                     }
                 }
+                if(!super.jungleBoundary.contains(space)){
+                    result.add(space);
+                }
             }
         }
         return result;
