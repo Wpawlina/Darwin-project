@@ -1,6 +1,5 @@
 package darwin.model;
 
 public interface WorldElement {
-        public Vector2d getPosition();
-
+       Vector2d getPosition();
 }

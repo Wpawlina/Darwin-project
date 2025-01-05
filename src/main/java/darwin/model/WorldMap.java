@@ -1,31 +1,21 @@
 package darwin.model;
 
-public interface WorldMap {
-    public void place(AbstractAnimal animal, Vector2d position);
+import darwin.model.animal.AbstractAnimal;
 
-    public  void move (AbstractAnimal animal);
+public interface WorldMap extends MoveValidator{
+    void place(AbstractAnimal animal, Vector2d position);
 
+    void move (AbstractAnimal animal);
 
-    public void eat();
+    void eat();
 
+    void reproduce(int min , int max,int sufficientEnergy,int energyCost);
 
-    public void reproduce(int min , int max,int sufficientEnergy,int energyCost);
+    void subtractEnergy();
 
-    public void subtractEnergy();
+    void spawnPlants();
 
-    public void spawnPlants();
+    int countPlant();
 
-
-    public int countPlant();
-
-    public int countEmptyPositions();
-
-    public boolean canMoveTo(Vector2d position);
-
-
-
-
-
-
-
+    int countEmptyPositions();
 }
