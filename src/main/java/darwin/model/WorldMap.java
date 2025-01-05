@@ -3,22 +3,19 @@ package darwin.model;
 import darwin.model.animal.AbstractAnimal;
 
 public interface WorldMap extends MoveValidator{
-    public void place(AbstractAnimal animal, Vector2d position);
+    void place(AbstractAnimal animal, Vector2d position);
 
-    public  void move (AbstractAnimal animal);
+    void move (AbstractAnimal animal);
 
+    void eat();
 
-    public void eat();
+    void reproduce(int min , int max,int sufficientEnergy,int energyCost);
 
+    void subtractEnergy();
 
-    public void reproduce(int min , int max,int sufficientEnergy,int energyCost);
+    void spawnPlants();
 
-    public void subtractEnergy();
+    int countPlant();
 
-    public void spawnPlants();
-
-
-    public int countPlant();
-
-    public int countEmptyPositions();
+    int countEmptyPositions();
 }

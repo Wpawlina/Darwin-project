@@ -2,6 +2,7 @@ package darwin.util;
 
 import darwin.model.Vector2d;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
@@ -19,5 +20,15 @@ public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
             }
         }
         return result;
+    }
+    public ArrayList<Vector2d> generateArraySpaces(){
+        ArrayList<Vector2d> result = new ArrayList<>();
+        for(int x = lowerLeft.getX(); x < upperRight.getX(); x++){
+            for(int y =lowerLeft.getY(); y< upperRight.getY(); y++){
+                result.add(new Vector2d(x, y));
+            }
+        }
+        return result;
+
     }
 }

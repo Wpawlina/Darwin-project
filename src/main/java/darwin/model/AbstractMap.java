@@ -1,6 +1,9 @@
 package darwin.model;
 
 import darwin.model.animal.AbstractAnimal;
+import darwin.model.animal.Animal;
+import darwin.model.animal.AnimalCrazy;
+import darwin.model.animal.AnimalProperties;
 import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.MyRandom;
@@ -139,7 +142,12 @@ abstract public class AbstractMap implements WorldMap{
         spawnPlantNo(mapInitialProperties.spawnPlantPerDay(), possible);
     }
 
-    protected void spawnPlantNo(int no, ArrayList<ArrayList<Vector2d>> possible){
+    public void initialSpawnPlants(int i) {
+        ArrayList<ArrayList<Vector2d>> possible = partition(mapBoundary.generateSpaces(), jungleBoundary.generateSpaces());
+        spawnPlantNo(i, possible);
+    }
+
+    public void spawnPlantNo(int no, ArrayList<ArrayList<Vector2d>> possible){
         MyRandom random = new MyRandom();
         ArrayList<Vector2d> possible_fertile = possible.get(0);
         ArrayList<Vector2d> possible_infertile = possible.get(1);
@@ -156,6 +164,22 @@ abstract public class AbstractMap implements WorldMap{
                 place(newplant, newplant.getPosition());
             }
         }
+    }
+
+    public void spawnAnimalNo(int no, boolean crazy, int genomeLength){
+        MyRandom random = new MyRandom();
+        ArrayList<Vector2d> possible = mapBoundary.generateArraySpaces();
+
+        for(int i = 0; i < no; i++){
+                int draw = random.RandomInt(0, possible.size());
+                if(crazy){
+                    AbstractAnimal animal = new AnimalCrazy(genomeLength, possible.get(draw));
+                }
+                else {
+                    AbstractAnimal animal = new Animal(genomeLength, possible.get(draw));
+                }
+                place(animal, animal.getPosition());
+            }
     }
 
     protected ArrayList<ArrayList<Vector2d>> partition(HashSet<Vector2d> spaces, HashSet<Vector2d> fertile_spaces){
@@ -207,14 +231,4 @@ abstract public class AbstractMap implements WorldMap{
 
         return new Vector2d(x, y);
     }
-
-
-
-
-
-
-
-
-
-
 }
