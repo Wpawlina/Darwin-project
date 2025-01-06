@@ -170,7 +170,7 @@ abstract public class AbstractMap implements WorldMap{
         MyRandom random = new MyRandom();
         ArrayList<Vector2d> possible = mapBoundary.generateArraySpaces();
 
-        for(int i = 0; i < no; i++){
+       for(int i = 0; i < no; i++){
                 int draw = random.RandomInt(0, possible.size());
                 if(crazy){
                     AbstractAnimal animal = new AnimalCrazy(genomeLength, possible.get(draw));
