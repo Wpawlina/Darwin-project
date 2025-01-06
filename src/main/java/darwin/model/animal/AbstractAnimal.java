@@ -25,7 +25,9 @@ abstract  public class AbstractAnimal implements WorldElement {
          Vector2d unitVector=direction.toUnitVector();
          Vector2d newPosition=oldPosition.add(unitVector);
          if(map.canMoveTo(newPosition)){
-             this.properties.getPosition().add(unitVector);
+
+             newPosition=map.correctPosition(newPosition);
+             this.properties.setPosition(newPosition);
              this.properties.setDirection(direction);
              return true;
          }
