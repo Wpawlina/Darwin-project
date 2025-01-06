@@ -1,7 +1,7 @@
 package darwin.model;
 
 public class Plant implements WorldElement {
-    private Vector2d position;
+    private final Vector2d position;
 
 
     public Plant(Vector2d position) {
