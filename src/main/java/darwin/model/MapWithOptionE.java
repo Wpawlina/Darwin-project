@@ -14,9 +14,9 @@ public class MapWithOptionE extends  AbstractMap{
 
     private HashSet<Vector2d> vitalCorpses(){
         HashSet<Vector2d> result = new HashSet<>();
-        for(Vector2d space: super.animals.keySet()){
+        for(Vector2d space: super.living_animals.keySet()){
             boolean found = false;
-            for(AbstractAnimal animal : animals.get(space)){
+            for(AbstractAnimal animal : living_animals.get(space)){
                 if (animal.getProperties().getState().equals(AnimalState.RECENTLY_DIED)){
                     found = true;
                     break;

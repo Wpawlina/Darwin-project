@@ -6,10 +6,7 @@ import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.SimulationConfig;
 
-import java.util.ArrayList;
-
 public class Simulation {
-    private final   ArrayList<AbstractAnimal> animalsList = new ArrayList<>();
     private final AbstractMap map;
     private final SimulationConfig config;
 
@@ -17,7 +14,6 @@ public class Simulation {
         this.config = config;
         MapInitialProperties mapConfig = new MapInitialProperties(
                 config.spawnPlantPerDay(),
-                config.initialPlantSpawn(),
                 config.plantEnergy());
         Boundary mapBoundary = new Boundary(
                 new Vector2d(0, 0),
@@ -40,14 +36,18 @@ public class Simulation {
     }
 
     void run(){
-        map.spawnAnimalNo(config.initialAnimalSpawn(), config.crazy(), config.genomeLength());
+        map.spawnAnimalNo(
+                config.initialAnimalSpawn(),
+                config.crazy(),
+                config.genomeLength(),
+                config.initialAnimalEnergy());
 
         map.initialSpawnPlants(config.initialPlantSpawn());
 
         while(true){
             map.subtractEnergy();
 
-            for (AbstractAnimal animal : animalsList){
+            for (AbstractAnimal animal : map.getAnimals()){
                 if (animal.getProperties().getState().equals(AnimalState.ALIVE)){
                     map.move(animal);
                 }

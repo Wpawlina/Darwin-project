@@ -1,9 +1,6 @@
 package darwin.model;
 
-import darwin.model.animal.AbstractAnimal;
-import darwin.model.animal.Animal;
-import darwin.model.animal.AnimalCrazy;
-import darwin.model.animal.AnimalProperties;
+import darwin.model.animal.*;
 import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.MyRandom;
@@ -16,27 +13,30 @@ abstract public class AbstractMap implements WorldMap{
     protected final Boundary jungleBoundary;
     protected final MapInitialProperties mapInitialProperties;
 
-    protected final  HashMap<Vector2d, HashSet<AbstractAnimal>> animals = new HashMap<>();
+    protected final  HashMap<Vector2d, HashSet<AbstractAnimal>> living_animals = new HashMap<>();
+    protected final ArrayList<AbstractAnimal> animals = new ArrayList<>();
     protected final  HashMap<Vector2d, Plant> plants = new HashMap<>();
 
     private int plantCount = 0;
-    private int emptyPositionsCount = 0;
+    private int emptyPositionsCount;
     public AbstractMap(MapInitialProperties mapInitialProperties, Boundary mapBoundary, Boundary jungleBoundary){
         this.mapBoundary = mapBoundary;
         this.jungleBoundary = jungleBoundary;
         this.mapInitialProperties = mapInitialProperties;
+        emptyPositionsCount = mapBoundary.size();
     }
 
     @Override
     public void place(AbstractAnimal animal, Vector2d position) {
         if (canMoveTo(position)){
-            if (animals.containsKey(position)){
-                animals.get(position).add(animal);
+            if (living_animals.containsKey(position)){
+                living_animals.get(position).add(animal);
             }
             else{
-                animals.put(position, new HashSet<>(Set.of(animal)));
-                emptyPositionsCount ++;
+                living_animals.put(position, new HashSet<>(Set.of(animal)));
             }
+            animals.add(animal);
+            emptyPositionsCount --;
         }
     }
 
@@ -49,17 +49,17 @@ abstract public class AbstractMap implements WorldMap{
     @Override
     public void move(AbstractAnimal animal) {
         Vector2d old_p = animal.getPosition();
-        animals.get(old_p).remove(animal);
+        living_animals.get(old_p).remove(animal);
         animal.move(this);
         Vector2d new_p = animal.getPosition();
-        animals.get(new_p).add(animal);
+        living_animals.get(new_p).add(animal);
     }
 
     @Override
     public void eat() {
         for (Plant plant: plants.values()){
             Vector2d position = plant.getPosition();
-            HashSet<AbstractAnimal> willing = animals.get(position);
+            HashSet<AbstractAnimal> willing = living_animals.get(position);
             if (!willing.isEmpty()) {
                 plants.remove(plant.getPosition());
                 plantCount --;
@@ -102,21 +102,20 @@ abstract public class AbstractMap implements WorldMap{
 
     @Override
     public void reproduce(int min, int max, int sufficientEnergy, int energyCost) {
-        for(HashSet<AbstractAnimal> space : animals.values()){
+        for(HashSet<AbstractAnimal> space : living_animals.values()){
             int spaceSize = space.size();
             if (spaceSize > 1){
                 Iterator<AbstractAnimal> iter = space.iterator();
+                ArrayList<AbstractAnimal> parents = new ArrayList<>();
                 while (iter.hasNext()){
-                    AbstractAnimal mother = iter.next();
-                    int motherEnergy = mother.getProperties().getEnergy();
-                    if (motherEnergy >= sufficientEnergy && iter.hasNext()){
-                        AbstractAnimal father = iter.next();
-                        int fatherEnergy = father.getProperties().getEnergy();
-                        if (fatherEnergy >= sufficientEnergy) {
-                            Vector2d position = father.getPosition();
-                            AbstractAnimal child = mother.createChildren(father, energyCost, min, max);
-                            this.place(child, position);
-                        }
+                    AbstractAnimal current = iter.next();
+                    if (current.getProperties().getEnergy() >= sufficientEnergy){
+                        parents.add(current);
+                    }
+                    if (parents.size() == 2){
+                        AbstractAnimal child = parents.get(0).createChildren(parents.get(1), energyCost, min, max);
+                        place(child, parents.get(0).getPosition());
+                        parents.clear();
                     }
                 }
             }
@@ -126,10 +125,14 @@ abstract public class AbstractMap implements WorldMap{
 
     @Override
     public void subtractEnergy() {
-        for(HashSet<AbstractAnimal> space : animals.values()){
+        for(HashSet<AbstractAnimal> space : living_animals.values()){
             for(AbstractAnimal animal : space){
                 animal.subtractEnergy(1);
-                if (animal.getProperties().getEnergy() <= 0) {
+                if (animal.getProperties().getState().equals(AnimalState.RECENTLY_DIED)){
+                    animal.setState(AnimalState.DEAD);
+                    living_animals.get(animal.getPosition()).remove(animal);
+                }
+                else if (animal.getProperties().getEnergy() <= 0) {
                     animal.setState(AnimalState.RECENTLY_DIED);
                 }
             }
@@ -166,18 +169,13 @@ abstract public class AbstractMap implements WorldMap{
         }
     }
 
-    public void spawnAnimalNo(int no, boolean crazy, int genomeLength){
+    public void spawnAnimalNo(int no, boolean crazy, int genomeLength, int initialEnergy){
         MyRandom random = new MyRandom();
         ArrayList<Vector2d> possible = mapBoundary.generateArraySpaces();
 
         for(int i = 0; i < no; i++){
                 int draw = random.RandomInt(0, possible.size());
-                if(crazy){
-                    AbstractAnimal animal = new AnimalCrazy(genomeLength, possible.get(draw));
-                }
-                else {
-                    AbstractAnimal animal = new Animal(genomeLength, possible.get(draw));
-                }
+                AbstractAnimal animal = AnimalFactory.createAnimal(crazy, genomeLength, initialEnergy, possible.get(draw));
                 place(animal, animal.getPosition());
             }
     }
@@ -208,7 +206,12 @@ abstract public class AbstractMap implements WorldMap{
 
     @Override
     public int countEmptyPositions() {
-        return mapBoundary.size() - countPlant();
+        int result = 0;
+        ArrayList<Vector2d> spaces = mapBoundary.generateArraySpaces();
+        for (Vector2d space : spaces){
+            if (!plants.containsKey(space) && !living_animals.containsKey(space)) result ++;
+        }
+        return result;
     }
 
     @Override
@@ -231,4 +234,6 @@ abstract public class AbstractMap implements WorldMap{
 
         return new Vector2d(x, y);
     }
+
+    public ArrayList<AbstractAnimal> getAnimals(){return animals;}
 }
