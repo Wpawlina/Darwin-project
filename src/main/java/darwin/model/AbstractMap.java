@@ -150,7 +150,7 @@ abstract public class AbstractMap implements WorldMap{
         spawnPlantNo(i, possible);
     }
 
-    public void spawnPlantNo(int no, ArrayList<ArrayList<Vector2d>> possible){
+    protected void spawnPlantNo(int no, ArrayList<ArrayList<Vector2d>> possible){
         MyRandom random = new MyRandom();
         ArrayList<Vector2d> possible_fertile = possible.get(0);
         ArrayList<Vector2d> possible_infertile = possible.get(1);

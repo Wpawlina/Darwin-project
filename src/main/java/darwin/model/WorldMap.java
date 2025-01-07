@@ -5,6 +5,8 @@ import darwin.model.animal.AbstractAnimal;
 public interface WorldMap extends MoveValidator{
     void place(AbstractAnimal animal, Vector2d position);
 
+    void place(Plant plant, Vector2d position);
+
     void move (AbstractAnimal animal);
 
     void eat();
@@ -14,6 +16,8 @@ public interface WorldMap extends MoveValidator{
     void subtractEnergy();
 
     void spawnPlants();
+
+    void initialSpawnPlants(int i);
 
     int countPlant();
 

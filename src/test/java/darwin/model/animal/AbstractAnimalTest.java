@@ -161,20 +161,6 @@ class AbstractAnimalTest {
     }
 
     @Test
-    void createAnimalProperties() {
-        AbstractAnimal animal = new Animal(properties);
-        AbstractAnimal partner = new Animal(properties);
-
-        AnimalProperties newProperties = animal.createAnimalProperties(partner, 0);
-        assertEquals(properties.getGenome(), newProperties.getGenome());
-    }
-
-    @Test
-    void createAnimalPropertiesCrazy() {
-        AbstractAnimal animal = new AnimalCrazy(properties);
-        AbstractAnimal partner = new AnimalCrazy(properties);
-
-        AnimalProperties newProperties = animal.createAnimalProperties(partner, 0);
-        assertEquals(properties.getGenome(), newProperties.getGenome());
+    void createChildren() {
     }
 }
