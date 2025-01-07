@@ -21,7 +21,7 @@ public class Animal extends AbstractAnimal {
 
     @Override
     protected int newIndexAfterMove(int index) {
-        return (index+1)%8;
+        return (index+1)%this.getProperties().getGenome().length;
     }
 
 

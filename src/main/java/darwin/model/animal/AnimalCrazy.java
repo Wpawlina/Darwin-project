@@ -23,7 +23,7 @@ public class AnimalCrazy extends AbstractAnimal {
     protected int newIndexAfterMove(int index) {
         if(Math.random()<0.8)
         {
-            return (int)(Math.random()*8);
+            return (int)(Math.random()*this.getProperties().getGenome().length);
         }
         else {
             return (index+1)%8;
