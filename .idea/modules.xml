@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/untitled.iml" filepath="$PROJECT_DIR$/.idea/modules/untitled.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/untitled.main.iml" filepath="$PROJECT_DIR$/.idea/modules/untitled.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/untitled.test.iml" filepath="$PROJECT_DIR$/.idea/modules/untitled.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/127472863/darwin_project.iml" filepath="$PROJECT_DIR$/.idea/modules/127472863/darwin_project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/127472863/darwin_project.main.iml" filepath="$PROJECT_DIR$/.idea/modules/127472863/darwin_project.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/127472863/darwin_project.test.iml" filepath="$PROJECT_DIR$/.idea/modules/127472863/darwin_project.test.iml" />
     </modules>
   </component>
 </project>

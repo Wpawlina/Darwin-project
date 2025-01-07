@@ -236,4 +236,8 @@ abstract public class AbstractMap implements WorldMap{
     }
 
     public ArrayList<AbstractAnimal> getAnimals(){return animals;}
+
+    public HashSet<AbstractAnimal> getAnimalsOnSpace(Vector2d position){return living_animals.get(position);}
+
+    public Plant getPlantOnSpace(Vector2d position){return plants.get(position);}
 }
