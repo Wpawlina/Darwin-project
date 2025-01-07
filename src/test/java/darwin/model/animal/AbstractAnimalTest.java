@@ -162,5 +162,9 @@ class AbstractAnimalTest {
 
     @Test
     void createChildren() {
+        AbstractAnimal mother = new Animal(properties);
+        AbstractAnimal father = new AnimalCrazy(properties);
+
+        AbstractAnimal child = mother.createChildren(father, 0, 1, 1);
     }
 }

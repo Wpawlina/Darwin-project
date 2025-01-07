@@ -22,7 +22,7 @@ public interface WorldMap extends MoveValidator{
 
     void initialSpawnPlants(int i);
 
-    void spawnAnimalNo();
+    void spawnAnimalNo(int no, boolean crazy, int genomeLength, int initialEnergy);
 
     int countPlant();
 
