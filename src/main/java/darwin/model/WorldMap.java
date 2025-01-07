@@ -2,6 +2,9 @@ package darwin.model;
 
 import darwin.model.animal.AbstractAnimal;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public interface WorldMap extends MoveValidator{
     void place(AbstractAnimal animal, Vector2d position);
 
@@ -19,7 +22,15 @@ public interface WorldMap extends MoveValidator{
 
     void initialSpawnPlants(int i);
 
+    void spawnAnimalNo();
+
     int countPlant();
 
     int countEmptyPositions();
+
+    ArrayList<AbstractAnimal> getAnimals();
+
+    HashSet<AbstractAnimal> getAnimalsOnSpace(Vector2d position);
+
+    Plant getPlantOnSpace(Vector2d position);
 }
