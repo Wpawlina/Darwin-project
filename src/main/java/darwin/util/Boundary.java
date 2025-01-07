@@ -20,6 +20,8 @@ public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
             }
         }
         return result;
+
+
     }
     public ArrayList<Vector2d> generateArraySpaces(){
         ArrayList<Vector2d> result = new ArrayList<>();
