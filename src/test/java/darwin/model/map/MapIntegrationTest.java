@@ -2,6 +2,7 @@ package darwin.model.map;
 
 import darwin.model.*;
 import darwin.model.animal.AbstractAnimal;
+import darwin.model.animal.Animal;
 import darwin.model.animal.AnimalFactory;
 import darwin.util.AnimalState;
 import darwin.util.Boundary;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -17,33 +19,42 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MapIntegrationTest {
 
     @Test
-    @SuppressWarnings("unchecked")
     public void placeAnimal() {
-        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 0, 2);
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
         Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
         Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
         Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
 
         AbstractAnimal animal = AnimalFactory.createAnimal(false, 7, 10, new Vector2d(2, 2));
         map.place(animal, new Vector2d(2, 2));
-        assert map.countEmptyPositions() == mapBoundary.size() - 1;
-        try {
-            Field animals = map.getClass().getSuperclass().getDeclaredField("animals");
-            animals.setAccessible(true);
 
-            HashMap<Vector2d, HashSet<AbstractAnimal>> animalsMap = (HashMap<Vector2d, HashSet<AbstractAnimal>>) animals.get(map);
+        HashSet<AbstractAnimal> animalsOnSpace = map.getAnimalsOnSpace(new Vector2d(2, 2));
+        assertTrue(animalsOnSpace.contains(animal));
 
+        ArrayList<AbstractAnimal> animals = map.getAnimals();
+        assertTrue(animals.contains(animal));
 
-            assertTrue(animalsMap.get(new Vector2d(2, 2)).contains(animal));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+    }
 
-            assert false;
-        }
+    @Test
+    public void placePlants()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        Plant plant = new Plant(new Vector2d(2,2));
+
+        map.place(plant,plant.getPosition());
+
+        assertEquals( plant,map.getPlantOnSpace(new Vector2d(2,2)));
+
     }
 
     @Test
     public void AnimalEatsTest() {
-        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 0, 10);
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 10);
         Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
         Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
         Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
@@ -73,7 +84,7 @@ public class MapIntegrationTest {
 
     @Test
     public void subtractEnergyTest() {
-        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 0, 10);
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 10);
         Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
         Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
         Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
@@ -88,11 +99,40 @@ public class MapIntegrationTest {
         assertEquals(animal2.getProperties().getState(), AnimalState.RECENTLY_DIED);
     }
 
+    @Test
+    public  void animalReproductionTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        for (int i=0;i<5;i++)
+        {
+            Animal animal=(Animal) AnimalFactory.createAnimal(false,7,10,new Vector2d(2,2));
+            map.place(animal,new Vector2d(2,2));
+        }
+        Animal animal=(Animal) AnimalFactory.createAnimal(false,7,5,new Vector2d(2,2));
+        map.place(animal,new Vector2d(2,2));
+
+        map.reproduce(0,0,7,6);
+
+        HashSet<AbstractAnimal> animals = map.getAnimalsOnSpace(new Vector2d(2,2));
+        assertEquals( 8,animals.size());
+
+
+        int energySum=0;
+        for (AbstractAnimal abstractAnimal : animals) {
+            energySum+=abstractAnimal.getProperties().getEnergy();
+        }
+        assertEquals(55,energySum);
+    }
+
 
     @Test
     public void plantsCountTest() {
 
-        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 0, 10);
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 10);
         Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
         Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
         Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
@@ -108,7 +148,7 @@ public class MapIntegrationTest {
     @Test
     public void countEmptyPositionsTest() {
 
-        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 0, 10);
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 10);
         Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
         Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
         Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
@@ -130,7 +170,7 @@ public class MapIntegrationTest {
     @Test
     public void canMoveToTest() {
 
-        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 0, 10);
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0, 10);
         Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
         Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
         Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
@@ -144,7 +184,7 @@ public class MapIntegrationTest {
     @Test
     public void correctPositionTest()
     {
-        MapInitialProperties mapInitialProperties=new MapInitialProperties(0,0,10);
+        MapInitialProperties mapInitialProperties=new MapInitialProperties(0,10);
         Boundary mapBoundary = new Boundary(new Vector2d(0,0),new Vector2d(4,4));
         Boundary jungleBoundary = new Boundary(new Vector2d(0,1),new Vector2d(4,2));
         Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
@@ -162,6 +202,58 @@ public class MapIntegrationTest {
         assertEquals(new Vector2d(4,3),newPosition3);
 
     }
+
+    @Test
+    public void spawnPlantsTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(5,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        map.spawnPlants();
+
+        HashSet<Vector2d> spaces = mapBoundary.generateSpaces();
+        int plantsCount=0;
+        for (Vector2d space : spaces) {
+            if(map.getPlantOnSpace(space) != null)
+            {
+                plantsCount+=1;
+            }
+        }
+        assertEquals(5,plantsCount);
+
+    }
+
+    @Test
+    public void spawnAnimalNoTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        map.spawnAnimalNo(5,false,7,10);
+
+        assertEquals(5,map.getAnimals().size());
+
+        HashSet<Vector2d> spaces = mapBoundary.generateSpaces();
+        int animalCount=0;
+        for (Vector2d space : spaces) {
+            if(map.getAnimalsOnSpace(space)!=null)
+            {
+                animalCount+=map.getAnimalsOnSpace(space).size();
+            }
+        }
+
+        assertEquals(5,animalCount);
+
+
+
+    }
+
+
+
 
 
 

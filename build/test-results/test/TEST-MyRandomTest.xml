@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="MyRandomTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-01-06T17:56:26" hostname="DESKTOP-F0M6S2G" time="0.013">
+  <properties/>
+  <testcase name="RandomFracTest()" classname="MyRandomTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
