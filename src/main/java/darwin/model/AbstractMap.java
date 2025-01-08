@@ -107,6 +107,7 @@ abstract public class AbstractMap implements WorldMap{
             if (spaceSize > 1){
                 Iterator<AbstractAnimal> iter = space.iterator();
                 ArrayList<AbstractAnimal> parents = new ArrayList<>();
+                ArrayList<AbstractAnimal> toPlace = new ArrayList<>();
                 while (iter.hasNext()){
                     AbstractAnimal current = iter.next();
                     if (current.getProperties().getEnergy() >= sufficientEnergy){
@@ -114,9 +115,13 @@ abstract public class AbstractMap implements WorldMap{
                     }
                     if (parents.size() == 2){
                         AbstractAnimal child = parents.get(0).createChildren(parents.get(1), energyCost, min, max);
-                        place(child, parents.get(0).getPosition());
+                        toPlace.add(child);
                         parents.clear();
                     }
+                }
+
+                for(AbstractAnimal animal : toPlace){
+                    place(animal, animal.getPosition());
                 }
             }
         }
