@@ -163,12 +163,12 @@ abstract public class AbstractMap implements WorldMap{
             float firstDraw = random.RandomFrac();
             if(firstDraw <0.2){
                int secondDraw = random.RandomInt(0, possible_fertile.size());
-               Plant newplant = new Plant(possible_fertile.get(secondDraw));
+               Plant newplant = new Plant(possible_fertile.remove(secondDraw));
                place(newplant, newplant.getPosition());
             }
             else {
                 int secondDraw = random.RandomInt(0, possible_infertile.size());
-                Plant newplant = new Plant(possible_infertile.get(secondDraw));
+                Plant newplant = new Plant(possible_infertile.remove(secondDraw));
                 place(newplant, newplant.getPosition());
             }
         }
@@ -180,7 +180,7 @@ abstract public class AbstractMap implements WorldMap{
 
        for(int i = 0; i < no; i++){
                 int draw = random.RandomInt(0, possible.size());
-                AbstractAnimal animal = AnimalFactory.createAnimal(crazy, genomeLength, initialEnergy, possible.get(draw));
+                AbstractAnimal animal = AnimalFactory.createAnimal(crazy, genomeLength, initialEnergy, possible.remove(draw));
                 place(animal, animal.getPosition());
             }
     }
@@ -205,9 +205,7 @@ abstract public class AbstractMap implements WorldMap{
     }
 
     @Override
-    public int countPlant() {
-        return plants.size();
-    }
+    public int countPlant() {return plants.size();}
 
     @Override
     public int countEmptyPositions() {
@@ -222,22 +220,19 @@ abstract public class AbstractMap implements WorldMap{
     @Override
     public boolean canMoveTo(Vector2d position){
         return (this.mapBoundary.lowerLeft().getY() <= position.getY()
-                && position.getY() < this.mapBoundary.upperRight().getY());
+                && position.getY() <= this.mapBoundary.upperRight().getY());
     }
 
     @Override
     public Vector2d correctPosition(Vector2d position){
         int x = position.getX();
-        int y = position.getY();
         int left = mapBoundary.lowerLeft().getX();
         int right = mapBoundary.upperRight().getX();
-        int top = mapBoundary.upperRight().getY();
-        int bottom = mapBoundary.lowerLeft().getY();
 
-        if (x < left) x = x - left + right;
-        else if (x >= right) x = x - right + left;
+        if (x < left) x = x - left + 1 + right;
+        else if (x > right) x = x - right - 1 + left;
 
-        return new Vector2d(x, y);
+        return new Vector2d(x, position.getY());
     }
 
     public ArrayList<AbstractAnimal> getAnimals(){return animals;}

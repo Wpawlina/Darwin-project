@@ -10,12 +10,12 @@ public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
         return position.follows(lowerLeft) && position.precedes(upperRight);
     }
     public int size(){
-        return ((upperRight.getX() - lowerLeft().getX()) * (upperRight().getY()) - lowerLeft().getY()) + 1;
+        return (((upperRight.getX() - lowerLeft().getX()) + 1) * ((upperRight().getY() - lowerLeft().getY()) + 1));
     }
     public HashSet<Vector2d> generateSpaces(){
         HashSet<Vector2d> result = new HashSet<>();
         for(int x = lowerLeft.getX(); x <= upperRight.getX(); x++){
-            for(int y =lowerLeft.getY(); y <= upperRight.getY(); y++){
+            for(int y = lowerLeft.getY(); y <= upperRight.getY(); y++){
                result.add(new Vector2d(x, y));
             }
         }
