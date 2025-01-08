@@ -26,7 +26,7 @@ public class AnimalCrazy extends AbstractAnimal {
             return (int)(Math.random()*this.getProperties().getGenome().length);
         }
         else {
-            return (index+1)%8;
+            return (index+1)%this.getProperties().getGenome().length;;
         }
     }
 
