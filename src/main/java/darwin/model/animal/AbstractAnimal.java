@@ -96,7 +96,7 @@ abstract  public class AbstractAnimal implements WorldElement {
     protected AnimalProperties createAnimalProperties(AbstractAnimal partner, int energyCost) {
         int[] genome = this.properties.getGenome();
         int[] partnerGenome = partner.getProperties().getGenome();
-        int[] childGenome = new int[8];
+        int[] childGenome = new int[this.properties.getGenome().length];
         int parent1Energy = this.properties.getEnergy();
         int parent2Energy = partner.getProperties().getEnergy();
         int totalEnergy = parent1Energy + parent2Energy;
@@ -105,7 +105,7 @@ abstract  public class AbstractAnimal implements WorldElement {
             for (int i = 0; i < genomsToGive; i++) {
                 childGenome[i] = genome[i];
             }
-            for (int i = genomsToGive; i < 8; i++) {
+            for (int i = genomsToGive; i < this.properties.getGenome().length; i++) {
                 childGenome[i] = partnerGenome[i];
             }
 
@@ -115,7 +115,7 @@ abstract  public class AbstractAnimal implements WorldElement {
             for (int i = 0; i < genomsToGive; i++) {
                 childGenome[i] = partnerGenome[i];
             }
-            for (int i = genomsToGive; i < 8; i++) {
+            for (int i = genomsToGive; i < this.properties.getGenome().length; i++) {
                 childGenome[i] = genome[i];
             }
         }
