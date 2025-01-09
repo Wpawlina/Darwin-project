@@ -18,7 +18,7 @@ class AnimalCrazyTest {
             0,
             0,
             Directions.NORTH,
-            1,
+            2,
             position,
             AnimalState.ALIVE);
     AnimalProperties properties2 = new AnimalProperties(new int[]{0},
@@ -28,7 +28,7 @@ class AnimalCrazyTest {
             0,
             0,
             Directions.NORTH,
-            1,
+            2,
             position,
             AnimalState.ALIVE);
     AnimalProperties properties3 = new AnimalProperties(new int[]{0},
@@ -38,7 +38,7 @@ class AnimalCrazyTest {
             0,
             0,
             Directions.NORTH,
-            1,
+            2,
             position,
             AnimalState.ALIVE);
 
