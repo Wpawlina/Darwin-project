@@ -12,8 +12,8 @@ public class Animal extends AbstractAnimal {
         AbstractAnimal child=new Animal(childProperties);
         child.getProperties().getParents().add(this);
         child.getProperties().getParents().add(partner);
-        this.properties.setEnergy(this.properties.getEnergy()-energyCost);
-        partner.properties.setEnergy(partner.getProperties().getEnergy()-energyCost);
+        this.getProperties().setEnergy(this.getProperties().getEnergy()-energyCost);
+        partner.getProperties().setEnergy(partner.getProperties().getEnergy()-energyCost);
         child.mutate(min,max);
         this.addChildren(child);
         partner.addChildren(child);

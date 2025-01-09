@@ -21,6 +21,16 @@ class AnimalTest {
             2,
             position,
             AnimalState.ALIVE);
+    AnimalProperties properties2 = new AnimalProperties(new int[]{0},
+            0,
+            new HashSet<>(),
+            new HashSet<>(),
+            0,
+            0,
+            Directions.NORTH,
+            2,
+            position,
+            AnimalState.ALIVE);
 
     @Test
     void createChildren() {
