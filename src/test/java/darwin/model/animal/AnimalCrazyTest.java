@@ -31,18 +31,28 @@ class AnimalCrazyTest {
             1,
             position,
             AnimalState.ALIVE);
+    AnimalProperties properties3 = new AnimalProperties(new int[]{0},
+            0,
+            new HashSet<>(),
+            new HashSet<>(),
+            0,
+            0,
+            Directions.NORTH,
+            1,
+            position,
+            AnimalState.ALIVE);
 
     @Test
     void newIndexAfterMove() {
         AnimalCrazy animal = new AnimalCrazy(properties);
         int index = animal.newIndexAfterMove(0);
         assertTrue(0 <= index);
-        assertTrue(index >= animal.getProperties().getGenome().length);
+        assertTrue(index <= animal.getProperties().getGenome().length);
     }
     @Test
     void createChildren() {
-        AbstractAnimal mother = new Animal(properties);
-        AbstractAnimal father = new Animal(properties2);
+        AbstractAnimal mother = new Animal(properties2);
+        AbstractAnimal father = new Animal(properties3);
         AbstractAnimal child = mother.createChildren(father, 1, 1,1);
 
         assertEquals(1, mother.getProperties().getEnergy());
