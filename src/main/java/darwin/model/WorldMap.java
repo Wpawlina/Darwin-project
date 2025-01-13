@@ -33,4 +33,6 @@ public interface WorldMap extends MoveValidator{
     HashSet<AbstractAnimal> getAnimalsOnSpace(Vector2d position);
 
     Plant getPlantOnSpace(Vector2d position);
+
+    boolean anybodyAlive();
 }

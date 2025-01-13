@@ -240,4 +240,8 @@ abstract public class AbstractMap implements WorldMap{
     public HashSet<AbstractAnimal> getAnimalsOnSpace(Vector2d position){return living_animals.get(position);}
 
     public Plant getPlantOnSpace(Vector2d position){return plants.get(position);}
+
+    public boolean anybodyAlive(){
+        return (!living_animals.isEmpty());
+    }
 }

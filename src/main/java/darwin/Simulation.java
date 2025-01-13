@@ -44,7 +44,7 @@ public class Simulation {
 
         map.initialSpawnPlants(config.initialPlantSpawn());
 
-        while(true){
+    for(int i = 0; i<10; i++){
             map.subtractEnergy();
 
             for (AbstractAnimal animal : map.getAnimals()){
