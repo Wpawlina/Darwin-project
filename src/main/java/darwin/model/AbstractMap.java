@@ -43,6 +43,7 @@ abstract public class AbstractMap implements WorldMap{
     public void place(Plant plant, Vector2d position){
         if (!plants.containsKey(position)){
             plants.put(position, plant);
+            plantCount++;
         }
     }
 
@@ -52,15 +53,20 @@ abstract public class AbstractMap implements WorldMap{
         living_animals.get(old_p).remove(animal);
         animal.move(this);
         Vector2d new_p = animal.getPosition();
-        living_animals.get(new_p).add(animal);
+        if (living_animals.containsKey(new_p)){
+            living_animals.get(new_p).add(animal);
+        }
+        else{
+            living_animals.put(new_p, new HashSet<>(Set.of(animal)));
+        }
     }
 
     @Override
     public void eat() {
-        for (Plant plant: plants.values()){
+        for (Plant plant: new ArrayList<>(plants.values())){
             Vector2d position = plant.getPosition();
             HashSet<AbstractAnimal> willing = living_animals.get(position);
-            if (!willing.isEmpty()) {
+            if (willing != null && !willing.isEmpty()) {
                 plants.remove(plant.getPosition());
                 plantCount --;
                 int no = willing.size();

@@ -6,6 +6,8 @@ import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.SimulationConfig;
 
+import java.util.ArrayList;
+
 public class Simulation {
     private final AbstractMap map;
     private final SimulationConfig config;
@@ -47,7 +49,7 @@ public class Simulation {
     for(int i = 0; i<10; i++){
             map.subtractEnergy();
 
-            for (AbstractAnimal animal : map.getAnimals()){
+            for (AbstractAnimal animal : new ArrayList<>(map.getAnimals())){
                 if (animal.getProperties().getState().equals(AnimalState.ALIVE)){
                     map.move(animal);
                 }
