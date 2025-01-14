@@ -6,6 +6,7 @@ import darwin.model.animal.Animal;
 import darwin.model.animal.AnimalFactory;
 import darwin.util.AnimalState;
 import darwin.util.Boundary;
+import darwin.util.Directions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -247,6 +248,36 @@ public class MapIntegrationTest {
         }
 
         assertEquals(5,animalCount);
+    }
+
+    @Test
+    public void animalsMoveTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+
+        AbstractAnimal animal = AnimalFactory.createAnimal(false, 7, 10, new Vector2d(1, 1));
+        animal.getProperties().getGenome()[0]=0;
+
+        AbstractAnimal animal2 = AnimalFactory.createAnimal(false, 7, 10, new Vector2d(3, 3));
+        animal2.getProperties().getGenome()[0]=0;
+
+        map.place(animal, new Vector2d(1, 1));
+        map.place(animal2, new Vector2d(3, 3));
+
+        map.move(animal);
+        map.move(animal2);
+
+        assertEquals(new Vector2d(1,2),animal.getProperties().getPosition());
+        assertEquals(new Vector2d(3,4),animal2.getProperties().getPosition());
+        assertEquals(map.getAnimalsOnSpace(new Vector2d(1,2)).size(),1);
+        assertEquals(map.getAnimalsOnSpace(new Vector2d(3,4)).size(),1);
+
+
+
 
 
 
