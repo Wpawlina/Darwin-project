@@ -167,12 +167,12 @@ abstract public class AbstractMap implements WorldMap{
         ArrayList<Vector2d> possible_infertile = possible.get(1);
         for(int i = 0; i < no; i++){
             float firstDraw = random.RandomFrac();
-            if(firstDraw <0.2){
+            if(firstDraw <0.2 && !possible_fertile.isEmpty()){
                int secondDraw = random.RandomInt(0, possible_fertile.size());
                Plant newplant = new Plant(possible_fertile.remove(secondDraw));
                place(newplant, newplant.getPosition());
             }
-            else {
+            else if(!possible_infertile.isEmpty()) {
                 int secondDraw = random.RandomInt(0, possible_infertile.size());
                 Plant newplant = new Plant(possible_infertile.remove(secondDraw));
                 place(newplant, newplant.getPosition());

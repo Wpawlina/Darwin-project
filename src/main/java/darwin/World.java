@@ -10,7 +10,7 @@ public class World {
                 10,
                 true,
                 2,
-                100,
+                10,
                 1,
                 2,
                 5,
