@@ -1,6 +1,5 @@
 package darwin;
 
-import darwin.util.Directions;
 import darwin.util.SimulationConfig;
 
 public class World {
@@ -11,11 +10,11 @@ public class World {
                 10,
                 true,
                 2,
-                2,
+                10,
                 1,
-                2,
+                10,
                 5,
-                4,
+                3,
                 2,
                 1,
                 4,
@@ -24,6 +23,11 @@ public class World {
         );
 
         Simulation simulation = new Simulation(testConfig);
-        simulation.run();
+        try {
+            simulation.run();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

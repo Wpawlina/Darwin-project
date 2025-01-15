@@ -6,6 +6,7 @@ import darwin.util.Boundary;
 import darwin.util.MyRandom;
 
 import java.util.*;
+import java.util.Map;
 
 
 abstract public class AbstractMap implements WorldMap{
@@ -43,6 +44,7 @@ abstract public class AbstractMap implements WorldMap{
     public void place(Plant plant, Vector2d position){
         if (!plants.containsKey(position)){
             plants.put(position, plant);
+            plantCount++;
         }
     }
 
@@ -52,15 +54,20 @@ abstract public class AbstractMap implements WorldMap{
         living_animals.get(old_p).remove(animal);
         animal.move(this);
         Vector2d new_p = animal.getPosition();
-        living_animals.get(new_p).add(animal);
+        if (living_animals.containsKey(new_p)){
+            living_animals.get(new_p).add(animal);
+        }
+        else{
+            living_animals.put(new_p, new HashSet<>(Set.of(animal)));
+        }
     }
 
     @Override
     public void eat() {
-        for (Plant plant: plants.values()){
+        for (Plant plant: new ArrayList<>(plants.values())){
             Vector2d position = plant.getPosition();
             HashSet<AbstractAnimal> willing = living_animals.get(position);
-            if (!willing.isEmpty()) {
+            if (willing != null && !willing.isEmpty()) {
                 plants.remove(plant.getPosition());
                 plantCount --;
                 int no = willing.size();
@@ -117,6 +124,7 @@ abstract public class AbstractMap implements WorldMap{
                         AbstractAnimal child = parents.get(0).createChildren(parents.get(1), energyCost, min, max);
                         toPlace.add(child);
                         parents.clear();
+                        System.out.println("reproduced");
                     }
                 }
 
@@ -130,17 +138,21 @@ abstract public class AbstractMap implements WorldMap{
 
     @Override
     public void subtractEnergy() {
+        HashMap<Vector2d, AbstractAnimal> toDelete = new HashMap<>();
         for(HashSet<AbstractAnimal> space : living_animals.values()){
             for(AbstractAnimal animal : space){
                 animal.subtractEnergy(1);
                 if (animal.getProperties().getState().equals(AnimalState.RECENTLY_DIED)){
                     animal.setState(AnimalState.DEAD);
-                    living_animals.get(animal.getPosition()).remove(animal);
+                    toDelete.put(animal.getPosition(), animal);
                 }
                 else if (animal.getProperties().getEnergy() <= 0) {
                     animal.setState(AnimalState.RECENTLY_DIED);
                 }
             }
+        }
+        for(Map.Entry<Vector2d, AbstractAnimal> entry : toDelete.entrySet()){
+            living_animals.get(entry.getKey()).remove(entry.getValue());
         }
     }
 
@@ -161,12 +173,12 @@ abstract public class AbstractMap implements WorldMap{
         ArrayList<Vector2d> possible_infertile = possible.get(1);
         for(int i = 0; i < no; i++){
             float firstDraw = random.RandomFrac();
-            if(firstDraw <0.2){
+            if(firstDraw <0.2 && !possible_fertile.isEmpty()){
                int secondDraw = random.RandomInt(0, possible_fertile.size());
                Plant newplant = new Plant(possible_fertile.remove(secondDraw));
                place(newplant, newplant.getPosition());
             }
-            else {
+            else if(!possible_infertile.isEmpty()) {
                 int secondDraw = random.RandomInt(0, possible_infertile.size());
                 Plant newplant = new Plant(possible_infertile.remove(secondDraw));
                 place(newplant, newplant.getPosition());
@@ -237,11 +249,21 @@ abstract public class AbstractMap implements WorldMap{
 
     public ArrayList<AbstractAnimal> getAnimals(){return animals;}
 
+    public ArrayList<AbstractAnimal> getAliveAnimals(){
+        return new ArrayList<>(
+                animals.stream().filter(
+                        animal -> animal.getProperties().getState().equals(AnimalState.ALIVE)).toList()
+        );
+    }
+
     public HashSet<AbstractAnimal> getAnimalsOnSpace(Vector2d position){return living_animals.get(position);}
 
     public Plant getPlantOnSpace(Vector2d position){return plants.get(position);}
 
     public boolean anybodyAlive(){
-        return (!living_animals.isEmpty());
+        for(AbstractAnimal animal : animals){
+            if (animal.getProperties().getState().equals(AnimalState.ALIVE)) return true;
+        }
+        return false;
     }
 }
