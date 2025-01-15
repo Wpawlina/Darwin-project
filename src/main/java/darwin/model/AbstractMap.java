@@ -66,17 +66,25 @@ abstract public class AbstractMap implements WorldMap{
     public void eat() {
         for (Plant plant: new ArrayList<>(plants.values())){
             Vector2d position = plant.getPosition();
-            HashSet<AbstractAnimal> willing = living_animals.get(position);
-            if (willing != null && !willing.isEmpty()) {
-                plants.remove(plant.getPosition());
-                plantCount --;
-                int no = willing.size();
-                Iterator<AbstractAnimal> iter = willing.iterator();
-                if (no == 1){
-                    iter.next().eat(mapInitialProperties.plantEnergy());
+            if(living_animals.containsKey(position)){
+                HashSet<AbstractAnimal> space = living_animals.get(position);
+                ArrayList<AbstractAnimal> willing = new ArrayList<>();
+                for (AbstractAnimal animal : space){
+                    if(animal.getProperties().getState().equals(AnimalState.ALIVE)){
+                        willing.add(animal);
+                    }
                 }
-                else {
-                    conflict(iter).eat(mapInitialProperties.plantEnergy());
+                if (!willing.isEmpty()) {
+                    plants.remove(plant.getPosition());
+                    plantCount --;
+                    int no = willing.size();
+                    Iterator<AbstractAnimal> iter = willing.iterator();
+                    if (no == 1){
+                        iter.next().eat(mapInitialProperties.plantEnergy());
+                    }
+                    else {
+                        conflict(iter).eat(mapInitialProperties.plantEnergy());
+                    }
                 }
             }
         }
@@ -190,11 +198,13 @@ abstract public class AbstractMap implements WorldMap{
         MyRandom random = new MyRandom();
         ArrayList<Vector2d> possible = mapBoundary.generateArraySpaces();
 
-       for(int i = 0; i < no; i++){
+        if (!possible.isEmpty()){
+            for(int i = 0; i < no; i++){
                 int draw = random.RandomInt(0, possible.size());
-                AbstractAnimal animal = AnimalFactory.createAnimal(crazy, genomeLength, initialEnergy, possible.remove(draw));
+                AbstractAnimal animal = AnimalFactory.createAnimal(crazy, genomeLength, initialEnergy, possible.get(draw));
                 place(animal, animal.getPosition());
             }
+        }
     }
 
     protected ArrayList<ArrayList<Vector2d>> partition(HashSet<Vector2d> spaces, HashSet<Vector2d> fertile_spaces){
@@ -266,4 +276,5 @@ abstract public class AbstractMap implements WorldMap{
         }
         return false;
     }
+
 }
