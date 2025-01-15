@@ -1,2 +1,4 @@
 rootProject.name = 'darwin_project'
+include 'src:main:resources'
+findProject(':src:main:resources')?.name = 'resources'
 
