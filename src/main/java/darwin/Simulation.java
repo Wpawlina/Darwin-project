@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Simulation {
     private final AbstractMap map;
     private final SimulationConfig config;
+    private int day;
 
     public Simulation(SimulationConfig config){
         this.config = config;
@@ -37,7 +38,10 @@ public class Simulation {
         }
     }
 
+    int getDay(){return day;}
+
     void run(){
+        day = 0;
         map.spawnAnimalNo(
                 config.initialAnimalSpawn(),
                 config.crazy(),
@@ -46,7 +50,12 @@ public class Simulation {
 
         map.initialSpawnPlants(config.initialPlantSpawn());
 
-    for(int i = 0; i<10; i++){
+        while(map.anybodyAlive()){
+            day++;
+            System.out.println(day);
+            for(AbstractAnimal animal : map.getAliveAnimals()){
+                System.out.println(animal.getPosition().toString() + animal.getProperties().getEnergy());
+            }
             map.subtractEnergy();
 
             for (AbstractAnimal animal : new ArrayList<>(map.getAnimals())){

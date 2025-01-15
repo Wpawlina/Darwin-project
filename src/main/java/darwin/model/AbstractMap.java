@@ -6,6 +6,7 @@ import darwin.util.Boundary;
 import darwin.util.MyRandom;
 
 import java.util.*;
+import java.util.Map;
 
 
 abstract public class AbstractMap implements WorldMap{
@@ -123,6 +124,7 @@ abstract public class AbstractMap implements WorldMap{
                         AbstractAnimal child = parents.get(0).createChildren(parents.get(1), energyCost, min, max);
                         toPlace.add(child);
                         parents.clear();
+                        System.out.println("reproduced");
                     }
                 }
 
@@ -136,17 +138,21 @@ abstract public class AbstractMap implements WorldMap{
 
     @Override
     public void subtractEnergy() {
+        HashMap<Vector2d, AbstractAnimal> toDelete = new HashMap<>();
         for(HashSet<AbstractAnimal> space : living_animals.values()){
             for(AbstractAnimal animal : space){
                 animal.subtractEnergy(1);
                 if (animal.getProperties().getState().equals(AnimalState.RECENTLY_DIED)){
                     animal.setState(AnimalState.DEAD);
-                    living_animals.get(animal.getPosition()).remove(animal);
+                    toDelete.put(animal.getPosition(), animal);
                 }
                 else if (animal.getProperties().getEnergy() <= 0) {
                     animal.setState(AnimalState.RECENTLY_DIED);
                 }
             }
+        }
+        for(Map.Entry<Vector2d, AbstractAnimal> entry : toDelete.entrySet()){
+            living_animals.get(entry.getKey()).remove(entry.getValue());
         }
     }
 
@@ -243,11 +249,21 @@ abstract public class AbstractMap implements WorldMap{
 
     public ArrayList<AbstractAnimal> getAnimals(){return animals;}
 
+    public ArrayList<AbstractAnimal> getAliveAnimals(){
+        return new ArrayList<>(
+                animals.stream().filter(
+                        animal -> animal.getProperties().getState().equals(AnimalState.ALIVE)).toList()
+        );
+    }
+
     public HashSet<AbstractAnimal> getAnimalsOnSpace(Vector2d position){return living_animals.get(position);}
 
     public Plant getPlantOnSpace(Vector2d position){return plants.get(position);}
 
     public boolean anybodyAlive(){
-        return (!living_animals.isEmpty());
+        for(AbstractAnimal animal : animals){
+            if (animal.getProperties().getState().equals(AnimalState.ALIVE)) return true;
+        }
+        return false;
     }
 }
