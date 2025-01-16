@@ -10,6 +10,8 @@ import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
@@ -25,7 +27,7 @@ import darwin.util.Boundary;
 public class MapPresenter implements MapChangeListener {
 
     @FXML
-    private GridPane gridPane;
+    private Canvas canvas;
 
     @FXML
     private Button startButton;
@@ -109,7 +111,7 @@ public class MapPresenter implements MapChangeListener {
 
 
     private void drawMap(){
-        this.clearGrid();
+        this.clearCanvas();
         this.drawGrid();
     }
 
@@ -121,9 +123,9 @@ public class MapPresenter implements MapChangeListener {
     }
 
     @FXML
-    private void clearGrid() {
-        this.gridPane.getColumnConstraints().clear();
-        this.gridPane.getRowConstraints().clear();
+    private void clearCanvas() {
+        GraphicsContext gc= this.canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
     }
 
 
@@ -132,20 +134,37 @@ public class MapPresenter implements MapChangeListener {
         Boundary boundary = this.map.getMapBoundary();
         int mapWidth = boundary.upperRight().getX() - boundary.lowerLeft().getX() + 1;
         int mapHeight = boundary.upperRight().getY() - boundary.lowerLeft().getY() + 1;
-        int CELL_WIDTH =(int)Math.floor( gridPane.getWidth() / mapWidth);
-        int CELL_HEIGHT = (int)Math.floor(gridPane.getHeight() / mapHeight);
+        int CELL_WIDTH =(int)Math.ceil( canvas.getWidth() / mapWidth);
+        int CELL_HEIGHT = (int)Math.ceil(canvas.getHeight() / mapHeight);
         int CELL_SIZE = Math.min(CELL_WIDTH,CELL_HEIGHT);
-
-        for(int i=0; i<mapWidth; i++){
-            this.gridPane.getColumnConstraints().add(new ColumnConstraints(CELL_SIZE));
-        }
-        for(int i=0; i<mapHeight; i++){
-            this.gridPane.getRowConstraints().add(new RowConstraints(CELL_SIZE));
-        }
-
-
-        GridPane.setHalignment(this.gridPane, HPos.CENTER);
         this.drawFields(CELL_SIZE,mapWidth,mapHeight);
+        this.registerCanvasClickEvent(CELL_SIZE);
+
+
+    }
+
+    @FXML
+    private void registerCanvasClickEvent(int CELL_SIZE)
+    {
+        this.canvas.setOnMouseClicked(event -> {
+            if(this.startButtonState==StartButtonState.STOP)
+            {
+                double x = event.getX();
+                double y = event.getY();
+                int i = (int) Math.floor(x / CELL_SIZE);
+                int j = (int) Math.floor(y / CELL_SIZE);
+                Boundary boundary = this.map.getMapBoundary();
+                j = boundary.upperRight().getY() - j;
+
+                Vector2d position = new Vector2d(i, j);
+                this.simulation.setTrackedAnimal(this.map.getFirstAnimalOnSpace(position).orElse(null));
+                Platform.runLater(() -> {
+                    this.animalStatistics.getChildren().clear();
+                    this.drawAnimalStatistics();
+                });
+            }
+
+        });
 
 
     }
@@ -155,43 +174,30 @@ public class MapPresenter implements MapChangeListener {
         Boundary boundary = this.map.getMapBoundary();
         Boundary jungleBoundary = this.map.getJungleBoundary();
         int maxEnergy = this.map.getMaxEnergy();
+        GraphicsContext gc=this.canvas.getGraphicsContext2D();
+
         for(int i=0; i<mapWidth; i++){
             for(int j=0; j<mapHeight; j++){
                 StackPane field = new StackPane();
                 int y = boundary.upperRight().getY() - j;
                 Vector2d position = new Vector2d(i,y);
                 if (jungleBoundary.contains(position)){
-                    field.setStyle("-fx-background-color: "+ ColorProvider.getJungleColor());
+                    gc.setFill(ColorProvider.getJungleColor());
                 }
                 else{
-                    field.setStyle("-fx-background-color: "+ ColorProvider.getSteppeColor());
+                    gc.setFill(ColorProvider.getSteppeColor());
                 }
-                field.setOnMouseClicked(event -> {
-                    if(this.startButtonState==StartButtonState.STOP) {
-                        this.map.getFirstAnimalOnSpace(position).ifPresentOrElse((AbstractAnimal animal) -> {
+                gc.fillRect(i*CELL_SIZE,j*CELL_SIZE,CELL_SIZE,CELL_SIZE);
 
-                            this.simulation.setTrackedAnimal(animal);
-                            Platform.runLater(() -> {
-                                this.animalStatistics.getChildren().clear();
-                                this.drawAnimalStatistics();
 
-                            });
-                        }, () -> {
-                            this.simulation.setTrackedAnimal(null);
-                        });
-                    }
-                });
-                this.gridPane.add(field,i,j);
+
 
                 if(map.getFirstAnimalOnSpace(position).isPresent()){
-                    Circle circle = new Circle((double)CELL_SIZE/2);
-                    circle.setStyle("-fx-fill: "+ColorProvider.getAnimalColor(map.getFirstAnimalOnSpace(position).get().getProperties().getEnergy(),maxEnergy));
-                    field.getChildren().add(circle);
+                    gc.setFill(ColorProvider.getAnimalColor(map.getFirstAnimalOnSpace(position).get().getProperties().getEnergy(),maxEnergy));
+                    gc.fillOval(i*CELL_SIZE,j*CELL_SIZE,CELL_SIZE,CELL_SIZE);
                 } else if (map.getPlantOnSpace(position).isPresent()){
-                    Circle circle = new Circle((double)CELL_SIZE/2);
-                    circle.setStyle("-fx-fill: "+ ColorProvider.getPlantColor());
-                    field.getChildren().add(circle);
-
+                    gc.setFill(ColorProvider.getPlantColor());
+                    gc.fillOval(i*CELL_SIZE,j*CELL_SIZE,CELL_SIZE,CELL_SIZE);
                 }
             }
         }

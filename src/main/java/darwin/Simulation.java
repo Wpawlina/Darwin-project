@@ -80,14 +80,15 @@ public class Simulation  implements  Runnable{
                 config.initialAnimalEnergy());
 
         map.initialSpawnPlants(config.initialPlantSpawn());
-        int simulationSpeed = map.getMapBoundary().size()/2;
+
 
         while(map.anybodyAlive()){
             if(isRunning)
             {
                 try {
-                    sleep(simulationSpeed);
-                } catch (InterruptedException e) {
+                    sleep(50);
+                }
+                catch (InterruptedException e){
                     e.printStackTrace();
                 }
 
@@ -119,7 +120,7 @@ public class Simulation  implements  Runnable{
 
             }
             try {
-                sleep(100);
+                sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

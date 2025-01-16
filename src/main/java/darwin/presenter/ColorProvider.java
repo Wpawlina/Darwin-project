@@ -1,34 +1,38 @@
 package darwin.presenter;
 
+import javafx.scene.paint.Paint;
+
+import java.awt.*;
+
 public class ColorProvider{
 
 
-    public static   String getJungleColor() {
-        return "#006D06";
+    public static Paint getJungleColor() {
+        return Paint.valueOf("#006D06");
     }
 
 
-    public  static String getSteppeColor() {
-        return "#8CB353";
+    public  static Paint getSteppeColor() {
+        return Paint.valueOf("#8CB353");
     }
 
 
-    public static String getAnimalColor(int energy, int maxEnergy) {
+    public static Paint getAnimalColor(int energy, int maxEnergy) {
         if(energy < maxEnergy/4){
-            return "#EAB676";
+            return Paint.valueOf("#EAB676");
         }
         if(energy < maxEnergy/2){
-            return "#E28743";
+            return Paint.valueOf("#E28743");
         }
         if(energy < 3*maxEnergy/4){
-            return "#873E23";
+            return Paint.valueOf("#873E23");
         }
-        return "#21130D";
+        return Paint.valueOf("#21130D");
     }
 
 
-    public  static  String getPlantColor() {
-        return  "#288F12";
+    public  static  Paint getPlantColor() {
+        return  Paint.valueOf("#288F12");
     }
 
 

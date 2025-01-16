@@ -303,6 +303,176 @@ public class MapIntegrationTest {
 
     }
 
+    @Test
+    public void getMapBoundaryTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        assertEquals(mapBoundary,map.getMapBoundary());
+
+    }
+
+    @Test
+    public void getJungleBoundaryTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        assertEquals(jungleBoundary,map.getJungleBoundary());
+
+    }
+
+    @Test
+    public void anybodyAliveTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+
+        AbstractAnimal animal=AnimalFactory.createAnimal(false,7,10,new Vector2d(2,2));
+
+        map.place(animal,new Vector2d(2,2));
+
+        assertTrue(map.anybodyAlive());
+    }
+
+    @Test
+    public void getMaxEnergyTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        AbstractAnimal animal=AnimalFactory.createAnimal(false,7,10,new Vector2d(2,2));
+        AbstractAnimal animal1=AnimalFactory.createAnimal(false,7,20,new Vector2d(2,2));
+        AbstractAnimal animal2=AnimalFactory.createAnimal(false,7,30,new Vector2d(2,2));
+
+        map.place(animal,new Vector2d(2,2));
+        map.place(animal1,new Vector2d(2,2));
+        map.place(animal2,new Vector2d(2,2));
+
+        assertEquals(30,map.getMaxEnergy());
+    }
+
+    @Test
+    public void getFirstAnimalOnSpaceTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        AbstractAnimal animal=AnimalFactory.createAnimal(false,7,10,new Vector2d(2,2));
+        AbstractAnimal animal1=AnimalFactory.createAnimal(false,7,20,new Vector2d(2,2));
+        AbstractAnimal animal2=AnimalFactory.createAnimal(false,7,30,new Vector2d(2,2));
+
+        map.place(animal,new Vector2d(2,2));
+        map.place(animal1,new Vector2d(2,2));
+        map.place(animal2,new Vector2d(2,2));
+
+        assertEquals(animal2,map.getFirstAnimalOnSpace(new Vector2d(2,2)).orElse(AnimalFactory.createAnimal(false,7,0,new Vector2d(0,0))));
+
+    }
+
+    @Test
+    public void getAverageEnergy()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        AbstractAnimal animal=AnimalFactory.createAnimal(false,7,10,new Vector2d(2,2));
+        AbstractAnimal animal1=AnimalFactory.createAnimal(false,7,20,new Vector2d(2,2));
+        AbstractAnimal animal2=AnimalFactory.createAnimal(false,7,30,new Vector2d(2,2));
+
+        map.place(animal,new Vector2d(2,2));
+        map.place(animal1,new Vector2d(2,2));
+        map.place(animal2,new Vector2d(2,2));
+
+        assertEquals(20,map.getAverageEnergy());
+    }
+
+    @Test
+    public void increaseAge()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+
+        AbstractAnimal animal=AnimalFactory.createAnimal(false,7,10,new Vector2d(2,2));
+
+        map.place(animal,new Vector2d(2,2));
+        map.increaseAge();
+
+        assertEquals(1,animal.getProperties().getAge());
+    }
+
+    @Test
+    public void getAverageLifeSpan()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        AbstractAnimal animal=AnimalFactory.createAnimal(false,7,5,new Vector2d(2,2));
+        AbstractAnimal animal1=AnimalFactory.createAnimal(false,7,5,new Vector2d(2,2));
+        AbstractAnimal animal2=AnimalFactory.createAnimal(false,7,5,new Vector2d(2,2));
+
+        map.place(animal,new Vector2d(2,2));
+        map.increaseAge();
+        map.place(animal1,new Vector2d(2,2));
+        map.increaseAge();
+        map.place(animal2,new Vector2d(2,2));
+        map.increaseAge();
+        for(int i=0;i<5;i++)
+        {
+            map.subtractEnergy(i+1);
+        }
+
+
+
+
+       assertEquals(2,map.getAverageLifeSpan());
+
+    }
+
+    @Test
+    public void getAverageChildren()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+        AbstractAnimal animal=AnimalFactory.createAnimal(false,7,10,new Vector2d(2,2));
+        AbstractAnimal animal1=AnimalFactory.createAnimal(false,7,20,new Vector2d(2,2));
+        AbstractAnimal animal2=AnimalFactory.createAnimal(false,7,30,new Vector2d(2,2));
+
+        map.place(animal,new Vector2d(2,2));
+        map.place(animal1,new Vector2d(2,2));
+
+        map.reproduce(0,0,1,2);
+
+
+        assertEquals(1,Math.ceil(map.getAverageChildren()));
+
+
+
+
+
+    }
 
 
 
