@@ -31,19 +31,8 @@ public class Vector2d {
         return new Vector2d(x + vector.getX(), y + vector.getY());
     }
 
-    public Vector2d subtract(Vector2d vector) {
-        return new Vector2d(x - vector.getX(), y - vector.getY());
-    }
 
-    public Vector2d upperRight(Vector2d vector) {
-        return new Vector2d( Math.max(x, vector.getX()), Math.max(y, vector.getY()));
-    }
-    public Vector2d lowerLeft(Vector2d vector) {
-        return new Vector2d( Math.min(x, vector.getX()), Math.min(y, vector.getY()));
-    }
-    public Vector2d opposite() {
-        return new Vector2d(-this.x, -this.y);
-    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,0 +1,17 @@
+VBox{
+    -fx-padding: 15px;
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+}
+HBox{
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+
+}
+top
+{
+    -fx-padding: 15px;
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+
+}

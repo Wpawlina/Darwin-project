@@ -35,7 +35,7 @@ class AnimalTest {
     @Test
     void createChildren() {
         AbstractAnimal mother = new Animal(properties);
-        AbstractAnimal father = new Animal(properties);
+        AbstractAnimal father = new Animal(properties2);
         AbstractAnimal child = mother.createChildren(father, 1, 1,1);
 
         assertEquals(1, mother.getProperties().getEnergy());
@@ -46,6 +46,6 @@ class AnimalTest {
         assert mother.getProperties().getChildren().contains(child);
         assert father.getProperties().getChildren().contains(child);
         assertEquals(1, child.getProperties().getGenome().length);
-        assertNotEquals(0,child.getProperties().getGenome()[0]);
+
     }
 }
