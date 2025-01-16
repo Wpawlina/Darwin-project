@@ -80,7 +80,7 @@ public class Simulation  implements  Runnable{
                 config.initialAnimalEnergy());
 
         map.initialSpawnPlants(config.initialPlantSpawn());
-        int simulationSpeed = map.getMapBoundary().size()/5;
+        int simulationSpeed = map.getMapBoundary().size()/2;
 
         while(map.anybodyAlive()){
             if(isRunning)

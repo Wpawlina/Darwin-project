@@ -55,11 +55,13 @@ public interface WorldMap extends MoveValidator{
 
    int[] getMostPopularGenome();
 
+   String showMostPopularGenome();
+
    int getAverageEnergy();
 
    int getAverageLifeSpan();
 
-   int getAverageChildren();
+   double getAverageChildren();
 
 
     void registerObserver(MapChangeListener observer);

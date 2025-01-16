@@ -9,13 +9,19 @@
 <?import javafx.scene.layout.GridPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="800" minWidth="1200"
+            minHeight="900" minWidth="1300"
             fx:controller="darwin.presenter.MapPresenter" stylesheets="css/map.css">
     <top>
+        <VBox prefHeight="100">
+            <Label  fx:id="titleLabel" text="Darwin World Simulation"  textAlignment="CENTER"/>
+            <Label fx:id="infoLabel" textAlignment="CENTER"></Label>
+
+        </VBox>
+
 
     </top>
     <center>
-       <HBox>
+       <HBox >
            <VBox>
                <VBox fx:id="simulationStatistics">
 
@@ -26,15 +32,15 @@
 
            </VBox>
            <VBox>
-               <GridPane fx:id="gridPane" alignment="CENTER" gridLinesVisible="true" prefHeight="800" prefWidth="800"></GridPane>
+               <GridPane fx:id="gridPane" alignment="CENTER" gridLinesVisible="true" prefHeight="700" prefWidth="700"></GridPane>
            </VBox>
        </HBox>
 
     </center>
     <bottom>
-        <VBox alignment="CENTER">
+        <VBox alignment="CENTER" prefHeight="100">
 
-            <HBox><Button fx:id="startButton" >Start</Button></HBox>
+            <HBox><Button fx:id="startButton" >Stop</Button></HBox>
         </VBox>
 
     </bottom>

@@ -218,7 +218,7 @@ public class MapIntegrationTest {
         HashSet<Vector2d> spaces = mapBoundary.generateSpaces();
         int plantsCount=0;
         for (Vector2d space : spaces) {
-            if(map.getPlantOnSpace(space) != null)
+            if(map.getPlantOnSpace(space).isPresent())
             {
                 plantsCount+=1;
             }
@@ -242,7 +242,7 @@ public class MapIntegrationTest {
         HashSet<Vector2d> spaces = mapBoundary.generateSpaces();
         int animalCount=0;
         for (Vector2d space : spaces) {
-            if(map.getAnimalsOnSpace(space)!=null)
+            if(map.getAnimalsOnSpace(space).isPresent())
             {
                 animalCount+=map.getAnimalsOnSpace(space).orElse(new HashSet<>()).size();
             }
@@ -283,6 +283,28 @@ public class MapIntegrationTest {
 
 
     }
+
+    @Test
+    public void getMostPopularGenomeTest()
+    {
+        MapInitialProperties mapInitialProperties = new MapInitialProperties(0,  10);
+        Boundary mapBoundary = new Boundary(new Vector2d(0, 0), new Vector2d(4, 4));
+        Boundary jungleBoundary = new Boundary(new Vector2d(0, 1), new Vector2d(4, 2));
+        Map map = new Map(mapInitialProperties, mapBoundary, jungleBoundary);
+
+
+        AbstractAnimal animal = AnimalFactory.createAnimal(false, 7, 10, new Vector2d(1, 1));
+
+        map.place(animal, new Vector2d(1, 1));
+
+        assertEquals(animal.getProperties().getGenome(),map.getMostPopularGenome());
+
+
+
+    }
+
+
+
 
 
 

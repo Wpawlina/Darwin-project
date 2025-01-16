@@ -21,7 +21,6 @@ import java.util.LinkedList;
 
 import darwin.util.Boundary;
 
-private LinkedList<>
 
 public class MapPresenter implements MapChangeListener {
 
@@ -36,6 +35,12 @@ public class MapPresenter implements MapChangeListener {
 
     @FXML
     private VBox animalStatistics;
+
+    @FXML
+    private Label infoLabel;
+
+    @FXML
+    private Label titleLabel;
 
     private StartButtonState startButtonState=StartButtonState.START;
 
@@ -62,7 +67,8 @@ public class MapPresenter implements MapChangeListener {
     public synchronized void AllAnimalsDead(WorldMap map) {
         Platform.runLater(()->{
             this.startButtonState = StartButtonState.ENDED;
-            this.startButton.setText(StartButtonState.ENDED.getText());
+            this.startButton.setText(StartButtonState.ENDED.getNextState().getText());
+            this.infoLabel.setText("All animals are dead!!!");
         });
     }
 
@@ -72,12 +78,12 @@ public class MapPresenter implements MapChangeListener {
         {
             case START -> {
                 this.startButtonState = StartButtonState.STOP;
-                this.startButton.setText(StartButtonState.STOP.getText());
+                this.startButton.setText(StartButtonState.STOP.getNextState().getText());
                 this.simulation.setRunning(false);
             }
             case  STOP -> {
                 this.startButtonState = StartButtonState.START;
-                this.startButton.setText(StartButtonState.START.getText());
+                this.startButton.setText(StartButtonState.START.getNextState().getText());
                 this.simulation.setRunning(true);
 
             }
@@ -197,10 +203,10 @@ public class MapPresenter implements MapChangeListener {
         this.simulationStatistics.getChildren().add(new Label("Animals: " + this.map.getAliveAnimals().size()));
         this.simulationStatistics.getChildren().add(new Label("Plants: " + this.map.countPlant()));
         this.simulationStatistics.getChildren().add(new Label("Empty fields: " + this.map.countEmptyPositions()));
-        //this.simulationStatistics.getChildren().add(new Label("Most common genome: " + Arrays.toString(this.map.getMostPopularGenome())));
+        this.simulationStatistics.getChildren().add(new Label("Most common genome: " + this.map.showMostPopularGenome()));
         this.simulationStatistics.getChildren().add(new Label("Average energy: " + this.map.getAverageEnergy()));
         this.simulationStatistics.getChildren().add(new Label("Average life span: " + this.map.getAverageLifeSpan()));
-        this.simulationStatistics.getChildren().add(new Label("Average children number: " + this.map.getAverageChildren()));
+        this.simulationStatistics.getChildren().add(new Label("Average children number: " + Math.floor(this.map.getAverageChildren()*100)/100));
     }
 
     @FXML
@@ -215,6 +221,13 @@ public class MapPresenter implements MapChangeListener {
             this.animalStatistics.getChildren().add(new Label(animal.getProperties().getState()== AnimalState.ALIVE?"Life span: " + animal.getProperties().getAge():"Date of death: " + animal.getProperties().getDeathDate()));
         }, () -> {
             this.animalStatistics.getChildren().add(new Label("No animal is being tracked"));
+            this.animalStatistics.getChildren().add(new Label("Energy: " ));
+            this.animalStatistics.getChildren().add(new Label("Genome: "));
+            this.animalStatistics.getChildren().add(new Label("Genome index: "));
+            this.animalStatistics.getChildren().add(new Label("Plants eaten: "));
+            this.animalStatistics.getChildren().add(new Label("Children number: " ));
+            this.animalStatistics.getChildren().add(new Label("Descendents number: "));
+
         });
 
     }

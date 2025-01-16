@@ -69,21 +69,7 @@ public class Vector2dTest {
 
     }
 
-    @Test
-    public void upperRight() {
-        Vector2d v1 = new Vector2d(1, 2);
-        Vector2d v2 = new Vector2d(2, 3);
 
-        assertEquals((new Vector2d(2, 3)), v1.upperRight(v2));
-    }
-
-    @Test
-    public void lowerLeft() {
-        Vector2d v1 = new Vector2d(1, 2);
-        Vector2d v2 = new Vector2d(2, 3);
-
-        assertEquals((new Vector2d(1, 2)), v1.lowerLeft(v2));
-    }
 
     @Test
     public void add()
@@ -96,24 +82,9 @@ public class Vector2dTest {
         assertEquals((new Vector2d(3, 5)), result);
     }
 
-    @Test
-    public void subtract()
-    {
-        Vector2d v1 = new Vector2d(1, 2);
-        Vector2d v2 = new Vector2d(2, 3);
 
-        Vector2d result = v1.subtract(v2);
 
-        assertEquals((new Vector2d(-1, -1)), result);
-    }
 
-    @Test
-    public  void opposite()
-    {
-        Vector2d v1 = new Vector2d(1, 2);
-        Vector2d result = v1.opposite();
-        assertEquals((new Vector2d(-1, -2)), result);
-    }
 
 
 

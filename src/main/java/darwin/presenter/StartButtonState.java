@@ -14,4 +14,13 @@ public enum StartButtonState {
     public String getText() {
         return text;
     }
+
+    public StartButtonState getNextState() {
+        return switch (this) {
+            case START -> STOP;
+            case STOP -> START;
+            case ENDED -> ENDED;
+
+        };
+    }
 }

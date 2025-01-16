@@ -330,9 +330,22 @@ abstract public class AbstractMap implements WorldMap{
     @Override
     public int[] getMostPopularGenome()
     {
-        return Arrays.stream ( ( animals.stream().map(animal -> animal.getProperties().getGenome()).collect(Collectors.groupingBy(
-                Arrays::toString, Collectors.counting()
-        )).entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey().split(","))).mapToInt(Integer::parseInt).toArray();
+        return animals.stream().map(animal->animal.getProperties().getGenome()).collect(Collectors.groupingBy(
+                genome -> genome, Collectors.counting()
+        )).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(new int[]{});
+    }
+
+    @Override
+    public String showMostPopularGenome() {
+        int[] genome = getMostPopularGenome();
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+        for (int i = 0; i < genome.length; i++){
+            result.append(genome[i]);
+            if (i != genome.length - 1) result.append(", ");
+        }
+        result.append("]");
+        return result.toString();
     }
 
     @Override
@@ -350,8 +363,8 @@ abstract public class AbstractMap implements WorldMap{
     }
 
     @Override
-    public int getAverageChildren(){
-        return (int) animals.stream().filter(
+    public double getAverageChildren(){
+        return  animals.stream().filter(
                 animal -> animal.getProperties().getState().equals(AnimalState.ALIVE)
         ).mapToInt(AbstractAnimal::countChildren).average().orElse(0);
     }

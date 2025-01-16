@@ -8,9 +8,9 @@ public class WorldGUI {
         for(int i = 0; i < 14; i++) {
             arguments[i] = "10";
         }
-        arguments[0] = "1000";
-        arguments[1] = "1000";
-        arguments[6]="5";
+        arguments[0] = "10";
+        arguments[1] = "10";
+        arguments[6]="20";
 
 
 
