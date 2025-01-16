@@ -59,10 +59,25 @@ abstract  public class AbstractAnimal implements WorldElement {
     }
 
 
-    public void setState(AnimalState state)
+    public void setState(AnimalState state,int day)
     {
+        if(state==AnimalState.RECENTLY_DIED)
+        {
+            this.properties.setDeathDate(day);
+        }
         this.properties.setState(state);
     }
+
+    public void age()
+    {
+        this.properties.setAge(this.properties.getAge()+1);
+    }
+
+    public int countChildren()
+    {
+        return this.properties.getChildren().stream().filter(animal -> animal.getProperties().getParents().contains(this)).toArray().length;
+    }
+
 
 
     public Vector2d getPosition() {

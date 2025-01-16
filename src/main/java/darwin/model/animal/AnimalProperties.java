@@ -7,7 +7,7 @@ import darwin.util.Directions;
 import java.util.HashSet;
 
 public class AnimalProperties {
-    private int[] genome;
+    private final int[] genome;
     private int index;
     private final HashSet<AbstractAnimal> children;
     private final HashSet<AbstractAnimal> parents;
@@ -65,6 +65,10 @@ public class AnimalProperties {
         return plantsEaten;
     }
 
+    public int getDeathDate() {
+        return deathDate;
+    }
+
 
 
     public HashSet<AbstractAnimal> getChildren() {
@@ -81,6 +85,14 @@ public class AnimalProperties {
 
     void setIndex(int index) {
         this.index = index;
+    }
+
+    void setAge(int age) {
+        this.age = age;
+    }
+
+    void setDeathDate(int deathDate) {
+        this.deathDate = deathDate;
     }
 
 

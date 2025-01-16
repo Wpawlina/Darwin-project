@@ -5,8 +5,12 @@ import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.MyRandom;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 abstract public class AbstractMap implements WorldMap{
@@ -17,6 +21,7 @@ abstract public class AbstractMap implements WorldMap{
     protected final  HashMap<Vector2d, HashSet<AbstractAnimal>> living_animals = new HashMap<>();
     protected final ArrayList<AbstractAnimal> animals = new ArrayList<>();
     protected final  HashMap<Vector2d, Plant> plants = new HashMap<>();
+    protected final ArrayList<MapChangeListener> observers = new ArrayList<>();
 
     private int plantCount = 0;
     private int emptyPositionsCount;
@@ -40,6 +45,24 @@ abstract public class AbstractMap implements WorldMap{
             emptyPositionsCount --;
         }
     }
+
+    public void registerObserver(MapChangeListener observer){
+        this.observers.add(observer);
+
+    }
+
+    public void notifyObservers(){
+        for(MapChangeListener observer : observers){
+            observer.mapChanged(this);
+        }
+    }
+
+    public void notifyAllAnimalsDead(){
+        for(MapChangeListener observer : observers){
+            observer.AllAnimalsDead(this);
+        }
+    }
+
 
     public void place(Plant plant, Vector2d position){
         if (!plants.containsKey(position)){
@@ -137,17 +160,17 @@ abstract public class AbstractMap implements WorldMap{
 
 
     @Override
-    public void subtractEnergy() {
+    public void subtractEnergy(int day) {
         HashMap<Vector2d, AbstractAnimal> toDelete = new HashMap<>();
         for(HashSet<AbstractAnimal> space : living_animals.values()){
             for(AbstractAnimal animal : space){
                 animal.subtractEnergy(1);
                 if (animal.getProperties().getState().equals(AnimalState.RECENTLY_DIED)){
-                    animal.setState(AnimalState.DEAD);
+                    animal.setState(AnimalState.DEAD, day);
                     toDelete.put(animal.getPosition(), animal);
                 }
                 else if (animal.getProperties().getEnergy() <= 0) {
-                    animal.setState(AnimalState.RECENTLY_DIED);
+                    animal.setState(AnimalState.RECENTLY_DIED,day);
                 }
             }
         }
@@ -173,7 +196,7 @@ abstract public class AbstractMap implements WorldMap{
         ArrayList<Vector2d> possible_infertile = possible.get(1);
         for(int i = 0; i < no; i++){
             float firstDraw = random.RandomFrac();
-            if(firstDraw <0.2 && !possible_fertile.isEmpty()){
+            if(firstDraw >0.2 && !possible_fertile.isEmpty()){
                int secondDraw = random.RandomInt(0, possible_fertile.size());
                Plant newplant = new Plant(possible_fertile.remove(secondDraw));
                place(newplant, newplant.getPosition());
@@ -186,6 +209,7 @@ abstract public class AbstractMap implements WorldMap{
         }
     }
 
+    @Override
     public void spawnAnimalNo(int no, boolean crazy, int genomeLength, int initialEnergy){
         MyRandom random = new MyRandom();
         ArrayList<Vector2d> possible = mapBoundary.generateArraySpaces();
@@ -247,8 +271,10 @@ abstract public class AbstractMap implements WorldMap{
         return new Vector2d(x, position.getY());
     }
 
+    @Override
     public ArrayList<AbstractAnimal> getAnimals(){return animals;}
 
+    @Override
     public ArrayList<AbstractAnimal> getAliveAnimals(){
         return new ArrayList<>(
                 animals.stream().filter(
@@ -256,14 +282,79 @@ abstract public class AbstractMap implements WorldMap{
         );
     }
 
-    public HashSet<AbstractAnimal> getAnimalsOnSpace(Vector2d position){return living_animals.get(position);}
+    @Override
+    public Optional<HashSet<AbstractAnimal>> getAnimalsOnSpace(Vector2d position){return Optional.ofNullable(living_animals.get(position));}
 
-    public Plant getPlantOnSpace(Vector2d position){return plants.get(position);}
+    @Override
+    public Optional<Plant> getPlantOnSpace(Vector2d position){return Optional.ofNullable( plants.get(position));}
 
+    @Override
     public boolean anybodyAlive(){
         for(AbstractAnimal animal : animals){
             if (animal.getProperties().getState().equals(AnimalState.ALIVE)) return true;
         }
         return false;
     }
+
+    @Override
+    public void increaseAge(){
+        animals.stream().filter(
+                animal -> animal.getProperties().getState().equals(AnimalState.ALIVE)
+        ).forEach(AbstractAnimal::age);
+
+    }
+
+    @Override
+    public Boundary getMapBoundary(){return mapBoundary;}
+
+    @Override
+    public Boundary getJungleBoundary(){return jungleBoundary;}
+
+
+    @Override
+    public int getMaxEnergy(){
+        return animals.stream().filter(
+                animal -> animal.getProperties().getState().equals(AnimalState.ALIVE)
+        ).mapToInt(animal->animal.getProperties().getEnergy()).max().orElse(1);
+    }
+
+    @Override
+    public Optional<AbstractAnimal> getFirstAnimalOnSpace(Vector2d position){
+        HashSet<AbstractAnimal> animals = living_animals.get(position);
+        if (animals != null && !animals.isEmpty()){
+            return Optional.of(animals.stream().max(Comparator.comparingInt(animal->animal.getProperties().getEnergy())).get());
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public int[] getMostPopularGenome()
+    {
+        return Arrays.stream ( ( animals.stream().map(animal -> animal.getProperties().getGenome()).collect(Collectors.groupingBy(
+                Arrays::toString, Collectors.counting()
+        )).entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey().split(","))).mapToInt(Integer::parseInt).toArray();
+    }
+
+    @Override
+    public int getAverageEnergy(){
+        return (int) animals.stream().filter(
+                animal -> animal.getProperties().getState().equals(AnimalState.ALIVE)
+        ).mapToInt(animal->animal.getProperties().getEnergy()).average().orElse(0);
+    }
+
+    @Override
+    public int getAverageLifeSpan(){
+        return (int) animals.stream().filter(
+                animal -> animal.getProperties().getState().equals(AnimalState.DEAD)|| animal.getProperties().getState().equals(AnimalState.RECENTLY_DIED)
+        ).mapToInt(animal->animal.getProperties().getAge()).average().orElse(0);
+    }
+
+    @Override
+    public int getAverageChildren(){
+        return (int) animals.stream().filter(
+                animal -> animal.getProperties().getState().equals(AnimalState.ALIVE)
+        ).mapToInt(AbstractAnimal::countChildren).average().orElse(0);
+    }
+
+
 }

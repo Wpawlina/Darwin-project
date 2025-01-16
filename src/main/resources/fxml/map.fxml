@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.GridPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="1000" minWidth="1000"
-            fx:controller="darwin.presenter.MapPresenter" stylesheets="../css/map.css">
+            minHeight="800" minWidth="1200"
+            fx:controller="darwin.presenter.MapPresenter" stylesheets="css/map.css">
     <top>
 
     </top>
@@ -26,7 +26,7 @@
 
            </VBox>
            <VBox>
-               <GridPane fx:id="gridPane" alignment="CENTER" gridLinesVisible="true"></GridPane>
+               <GridPane fx:id="gridPane" alignment="CENTER" gridLinesVisible="true" prefHeight="800" prefWidth="800"></GridPane>
            </VBox>
        </HBox>
 

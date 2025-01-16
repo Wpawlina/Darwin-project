@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SimulationEngine {
     final Simulation simulation;
-    private final Thread thread ;
+    private  Thread thread ;
 
 
     public  SimulationEngine(Simulation simulations) {
@@ -23,7 +23,6 @@ public class SimulationEngine {
 
         this.thread.start();
 
-        this.thread.join();
 
 
     }

@@ -95,14 +95,14 @@ class AbstractAnimalTest {
     @Test
     void setState() {
         AbstractAnimal animal = new Animal(properties);
-        animal.setState(AnimalState.DEAD);
+        animal.setState(AnimalState.DEAD,1);
         assertEquals(AnimalState.DEAD, animal.getProperties().getState());
     }
 
     @Test
     void setStateCrazy() {
         AbstractAnimal animal = new AnimalCrazy(properties);
-        animal.setState(AnimalState.DEAD);
+        animal.setState(AnimalState.DEAD,1);
         assertEquals(AnimalState.DEAD, animal.getProperties().getState());
     }
 

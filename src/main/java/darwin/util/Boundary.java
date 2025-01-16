@@ -31,4 +31,12 @@ public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
         return result;
 
     }
+
+    public Vector2d upperRight(){
+        return upperRight;
+    }
+
+    public Vector2d lowerLeft(){
+        return lowerLeft;
+    }
 }

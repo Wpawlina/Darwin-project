@@ -29,7 +29,7 @@ public class MapIntegrationTest {
         AbstractAnimal animal = AnimalFactory.createAnimal(false, 7, 10, new Vector2d(2, 2));
         map.place(animal, new Vector2d(2, 2));
 
-        HashSet<AbstractAnimal> animalsOnSpace = map.getAnimalsOnSpace(new Vector2d(2, 2));
+        HashSet<AbstractAnimal> animalsOnSpace = map.getAnimalsOnSpace(new Vector2d(2, 2)).orElse(new HashSet<>());
         assertTrue(animalsOnSpace.contains(animal));
 
         ArrayList<AbstractAnimal> animals = map.getAnimals();
@@ -49,7 +49,8 @@ public class MapIntegrationTest {
 
         map.place(plant,plant.getPosition());
 
-        assertEquals( plant,map.getPlantOnSpace(new Vector2d(2,2)));
+
+        assertEquals( plant,map.getPlantOnSpace(new Vector2d(2,2)).orElse(new Plant(new Vector2d(0,0))));
 
     }
 
@@ -94,7 +95,7 @@ public class MapIntegrationTest {
         map.place(animal, new Vector2d(2, 2));
         AbstractAnimal animal2 = AnimalFactory.createAnimal(false, 7, 1, new Vector2d(3, 3));
         map.place(animal2, new Vector2d(3, 3));
-        map.subtractEnergy();
+        map.subtractEnergy(1);
         assert animal.getProperties().getEnergy() == 9;
         assert animal2.getProperties().getEnergy() == 0;
         assertEquals(animal2.getProperties().getState(), AnimalState.RECENTLY_DIED);
@@ -118,7 +119,7 @@ public class MapIntegrationTest {
 
         map.reproduce(0,0,7,6);
 
-        HashSet<AbstractAnimal> animals = map.getAnimalsOnSpace(new Vector2d(2,2));
+        HashSet<AbstractAnimal> animals = map.getAnimalsOnSpace(new Vector2d(2,2)).orElse(new HashSet<>());
         assertEquals( 8,animals.size());
 
 
@@ -243,7 +244,7 @@ public class MapIntegrationTest {
         for (Vector2d space : spaces) {
             if(map.getAnimalsOnSpace(space)!=null)
             {
-                animalCount+=map.getAnimalsOnSpace(space).size();
+                animalCount+=map.getAnimalsOnSpace(space).orElse(new HashSet<>()).size();
             }
         }
 
@@ -273,8 +274,8 @@ public class MapIntegrationTest {
 
         assertEquals(new Vector2d(1,2),animal.getProperties().getPosition());
         assertEquals(new Vector2d(3,4),animal2.getProperties().getPosition());
-        assertEquals(map.getAnimalsOnSpace(new Vector2d(1,2)).size(),1);
-        assertEquals(map.getAnimalsOnSpace(new Vector2d(3,4)).size(),1);
+        assertEquals(map.getAnimalsOnSpace(new Vector2d(1,2)).orElse(new HashSet<>()).size(),1);
+        assertEquals(map.getAnimalsOnSpace(new Vector2d(3,4)).orElse(new HashSet<>()).size(),1);
 
 
 
