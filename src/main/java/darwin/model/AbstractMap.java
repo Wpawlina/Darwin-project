@@ -5,12 +5,9 @@ import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.MyRandom;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 abstract public class AbstractMap implements WorldMap{
