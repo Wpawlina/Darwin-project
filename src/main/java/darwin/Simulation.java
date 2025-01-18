@@ -20,6 +20,8 @@ public class Simulation  implements  Runnable{
     private AbstractAnimal trackedAnimal;
     private boolean isRunning = false;
 
+    private  boolean stop=false;
+
 
 
     public Simulation(SimulationConfig config){
@@ -69,6 +71,11 @@ public class Simulation  implements  Runnable{
         return map;
     }
 
+    public void stop()
+    {
+        stop=true;
+    }
+
     @Override
     public  void run(){
         day = 0;
@@ -86,7 +93,13 @@ public class Simulation  implements  Runnable{
             if(isRunning)
             {
                 try {
+                    if(stop)
+                    {
+                        return;
+                    }
                     sleep(50);
+
+
                 }
                 catch (InterruptedException e){
                     e.printStackTrace();

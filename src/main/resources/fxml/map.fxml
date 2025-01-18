@@ -12,7 +12,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="900" minWidth="1000"
-            fx:controller="darwin.presenter.MapPresenter" stylesheets="css/map.css">
+            fx:controller="darwin.presenter.MapPresenter" stylesheets="@../css/map.css">
     <top>
         <VBox prefHeight="100">
             <Label  fx:id="titleLabel" text="Darwin World Simulation"  textAlignment="CENTER"/>
