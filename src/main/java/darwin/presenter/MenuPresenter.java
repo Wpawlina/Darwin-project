@@ -29,8 +29,6 @@ public class MenuPresenter {
     @FXML
     public TextField formReproductionEnergyCost;
     @FXML
-    public TextField formAnimalEnergyDailyDepletion;//todelete
-    @FXML
     public TextField formReproductionEnergySufficient;
     @FXML
     public TextField formMinMutation;
