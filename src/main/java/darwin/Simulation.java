@@ -7,6 +7,8 @@ import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.SimulationConfig;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -21,6 +23,9 @@ public class Simulation  implements  Runnable{
     private boolean isRunning = false;
 
     private  boolean stop=false;
+
+    private File stat;
+    private CSVWriter statWriter;
 
 
 
@@ -88,6 +93,18 @@ public class Simulation  implements  Runnable{
 
         map.initialSpawnPlants(config.initialPlantSpawn());
 
+        if(config.exportStatistics()){
+            stat = new File("stat.csv");
+            try{
+                if(stat.delete()){
+                    stat.createNewFile();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            statWriter = new CSVWriter(stat);
+        }
 
         while(map.anybodyAlive()){
             if(isRunning)
@@ -103,6 +120,21 @@ public class Simulation  implements  Runnable{
                 }
                 catch (InterruptedException e){
                     e.printStackTrace();
+                }
+
+                if(config.exportStatistics()){
+                    statWriter.writeLine(
+                            new String[]{
+                                    String.valueOf(this.getDay()),
+                                    String.valueOf(this.map.getAliveAnimals().size()),
+                                    String.valueOf(this.map.countPlant()),
+                                    String.valueOf(this.map.countEmptyPositions()),
+                                    String.valueOf(this.map.showMostPopularGenome()),
+                                    String.valueOf(this.map.getAverageEnergy()),
+                                    String.valueOf(this.map.getAverageLifeSpan()),
+                                    String.valueOf(Math.floor(this.map.getAverageChildren()*100)/100)
+                            }
+                    );
                 }
 
                 day++;

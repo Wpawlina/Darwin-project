@@ -14,6 +14,7 @@ public record SimulationConfig(
         int minMutation,
         int maxMutation,
         boolean crazy,
-        int genomeLength
+        int genomeLength,
+        boolean exportStatistics
 ) {
 }

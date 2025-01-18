@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class CSVWriter implements FileWriter {
+public class CSVWriter implements ToFileWriter {
     public File csvFile;
     public PrintWriter writer;
     public Scanner reader;
@@ -39,10 +39,10 @@ public class CSVWriter implements FileWriter {
     }
 
     private String csvConvert(String[] data){
-        return String.join(",", data);
+        return String.join(";", data);
     }
     private String[] stringConvert(String csv){
-        return csv.split(",");
+        return csv.split("");
     }
 }
 

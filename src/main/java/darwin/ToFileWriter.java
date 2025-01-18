@@ -1,6 +1,6 @@
 package darwin;
 
-public interface FileWriter {
+public interface ToFileWriter {
     void writeLine(String[] args);
     String[] readLine();
     void clear();

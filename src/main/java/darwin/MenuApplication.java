@@ -49,7 +49,21 @@ public class MenuApplication extends Application {
             configureMapStage(primaryStage, viewRoot);
             primaryStage.show();
             ArrayList<String> args= new ArrayList<String>(Arrays.asList(arguments));
-            SimulationConfig config = new SimulationConfig(Integer.parseInt(args.getFirst()),Integer.parseInt(args.get(1)),Boolean.parseBoolean(args.get(2)),Integer.parseInt(args.get(3)),Integer.parseInt(args.get(4)),Integer.parseInt(args.get(5)),Integer.parseInt(args.get(6)),Integer.parseInt(args.get(7)),Integer.parseInt(args.get(8)),Integer.parseInt(args.get(9)),Integer.parseInt(args.get(10)),Integer.parseInt(args.get(11)),Boolean.parseBoolean(args.get(12)),Integer.parseInt(args.get(13)));
+            SimulationConfig config = new SimulationConfig(
+                    Integer.parseInt(args.getFirst()),
+                    Integer.parseInt(args.get(1)),Boolean.parseBoolean(args.get(2)),
+                    Integer.parseInt(args.get(3)),
+                    Integer.parseInt(args.get(4)),
+                    Integer.parseInt(args.get(5)),
+                    Integer.parseInt(args.get(6)),
+                    Integer.parseInt(args.get(7)),
+                    Integer.parseInt(args.get(8)),
+                    Integer.parseInt(args.get(9)),
+                    Integer.parseInt(args.get(10)),
+                    Integer.parseInt(args.get(11)),
+                    Boolean.parseBoolean(args.get(12)),
+                    Integer.parseInt(args.get(13)),
+                    Boolean.parseBoolean(args.get(14)));
             Simulation simulation= new Simulation(config);
 
 

@@ -58,17 +58,13 @@ public class MenuPresenter {
     @FXML
     public void initialize(){
         File conf = new File("conf.csv");
-        File stat = new File("stat.csv");
         try {
             conf.createNewFile();
-            stat.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         CSVWriter confWriter = new CSVWriter(conf);
-        CSVWriter statWriter = new CSVWriter(stat);
-        statWriter.clear();
 
 
 
@@ -78,10 +74,10 @@ public class MenuPresenter {
                 app.openMapStage(this.gatheredArguments());
             });
         });
-        this.exportConfiguration.setOnAction(event -> statWriter.writeLine(gatheredArguments()));
+        this.exportConfiguration.setOnAction(event -> confWriter.writeLine(gatheredArguments()));
         this.importConfiguration.setOnAction(event -> {
-            String[] confArr = statWriter.readLine();
-            if (confArr.length == 14) setArguments(confArr);
+            String[] confArr = confWriter.readLine();
+            if (confArr.length == 15) setArguments(confArr);
         });
     }
 
@@ -104,7 +100,8 @@ public class MenuPresenter {
                 formMinMutation.getText(),
                 formMaxMutation.getText(),
                 String.valueOf(formCrazy.isSelected()),
-                formGenomeLength.getText()
+                formGenomeLength.getText(),
+                String.valueOf(formExportStatistics.isSelected())
         };
     }
 
@@ -123,6 +120,7 @@ public class MenuPresenter {
         formMaxMutation.setText(args[11]);
         formCrazy.setSelected(Boolean.parseBoolean(args[12]));
         formGenomeLength.setText(args[13]);
+        formExportStatistics.setSelected(Boolean.parseBoolean(args[14]));
     }
 
 }

@@ -19,7 +19,8 @@ public class World {
                 1,
                 4,
                 true,
-                10
+                10,
+                false
         );
 
         Simulation simulation = new Simulation(testConfig);
