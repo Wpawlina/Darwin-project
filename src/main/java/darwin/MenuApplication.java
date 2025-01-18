@@ -34,7 +34,7 @@ public class MenuApplication extends Application {
     }
 
 
-    public void openMapStage()
+    public void openMapStage(ArrayList<String> args)
     {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/map.fxml"));

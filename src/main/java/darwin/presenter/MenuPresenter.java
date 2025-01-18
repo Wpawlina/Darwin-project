@@ -57,7 +57,7 @@ public class MenuPresenter {
     public void initialize(){
         this.createGame.setOnAction(event -> {
             Platform.runLater(() -> {
-                app.openMapStage();
+                app.openMapStage(this.gatheredArguments());
             });
         });
         this.exportConfiguration.setOnAction(event -> {});
