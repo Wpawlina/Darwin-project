@@ -71,7 +71,7 @@ public class MenuPresenter {
     }
 
     private String[] gatheredArguments(){
-        String[] args = {
+        return new String[] {
                 formMapHeight.getText(),
                 formMapWidth.getText(),
                 String.valueOf(formOptionE.isSelected()),
@@ -87,7 +87,6 @@ public class MenuPresenter {
                 String.valueOf(formCrazy.isSelected()),
                 formGenomeLength.getText()
         };
-        return args;
     }
 
 }
