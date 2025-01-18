@@ -2,7 +2,6 @@ package darwin;
 
 import darwin.model.*;
 import darwin.model.animal.AbstractAnimal;
-import darwin.model.animal.Animal;
 import darwin.util.AnimalState;
 import darwin.util.Boundary;
 import darwin.util.SimulationConfig;
@@ -10,7 +9,6 @@ import darwin.util.SimulationConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Optional;
 
 import static java.lang.Thread.sleep;
@@ -24,9 +22,7 @@ public class Simulation  implements  Runnable{
 
     private  boolean stop=false;
 
-    private File stat;
     private CSVWriter statWriter;
-
 
 
     public Simulation(SimulationConfig config){
@@ -94,7 +90,8 @@ public class Simulation  implements  Runnable{
         map.initialSpawnPlants(config.initialPlantSpawn());
 
         if(config.exportStatistics()){
-            stat = new File("stat.csv");
+            File stat = new File("stat.csv");
+
             try{
                 if(stat.delete()){
                     stat.createNewFile();
@@ -123,7 +120,7 @@ public class Simulation  implements  Runnable{
                 }
 
                 if(config.exportStatistics()){
-                    statWriter.writeLine(
+                    statWriter.appendLine(
                             new String[]{
                                     String.valueOf(this.getDay()),
                                     String.valueOf(this.map.getAliveAnimals().size()),
