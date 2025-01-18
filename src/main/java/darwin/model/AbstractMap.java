@@ -248,7 +248,8 @@ abstract public class AbstractMap implements WorldMap{
         int result = 0;
         ArrayList<Vector2d> spaces = mapBoundary.generateArraySpaces();
         for (Vector2d space : spaces){
-            if (!plants.containsKey(space) && !living_animals.containsKey(space)) result ++;
+            if (!plants.containsKey(space) && ( !living_animals.containsKey(space) || living_animals.get(space).isEmpty() )) result ++;
+
         }
         return result;
     }
