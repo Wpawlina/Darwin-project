@@ -9,10 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MenuApplication extends Application {
     @Override
@@ -34,19 +36,22 @@ public class MenuApplication extends Application {
     }
 
 
-    public void openMapStage(ArrayList<String> args)
+    public void openMapStage(String[] arguments)
     {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/map.fxml"));
         Stage primaryStage = new Stage();
+
+
         try {
             BorderPane viewRoot = loader.load();
             MapPresenter presenter = loader.getController();
             configureMapStage(primaryStage, viewRoot);
             primaryStage.show();
-            ArrayList<String> args= new ArrayList<String>( this.getParameters().getRaw());
+            ArrayList<String> args= new ArrayList<String>(Arrays.asList(arguments));
             SimulationConfig config = new SimulationConfig(Integer.parseInt(args.getFirst()),Integer.parseInt(args.get(1)),Boolean.parseBoolean(args.get(2)),Integer.parseInt(args.get(3)),Integer.parseInt(args.get(4)),Integer.parseInt(args.get(5)),Integer.parseInt(args.get(6)),Integer.parseInt(args.get(7)),Integer.parseInt(args.get(8)),Integer.parseInt(args.get(9)),Integer.parseInt(args.get(10)),Integer.parseInt(args.get(11)),Boolean.parseBoolean(args.get(12)),Integer.parseInt(args.get(13)));
             Simulation simulation= new Simulation(config);
+
 
             presenter.setSimulation(simulation);
 
@@ -55,6 +60,10 @@ public class MenuApplication extends Application {
             presenter.setMap(map);
             map.registerObserver(presenter);
             SimulationEngine engine = new SimulationEngine(simulation);
+            primaryStage.setOnCloseRequest(event -> {
+                simulation.stop();
+            });
+
 
             try {
                 engine.runAsync();
@@ -72,7 +81,7 @@ public class MenuApplication extends Application {
     private void configureStage(Stage primaryStage, GridPane viewRoot) {
         var scene = new Scene(viewRoot);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Simulation app");
+        primaryStage.setTitle("Menu app");
         primaryStage.minWidthProperty().bind(viewRoot.minWidthProperty());
         primaryStage.minHeightProperty().bind(viewRoot.minHeightProperty());
     }
@@ -80,7 +89,7 @@ public class MenuApplication extends Application {
     private void configureMapStage(Stage primaryStage, BorderPane viewRoot) {
         var scene = new Scene(viewRoot);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Simulation app");
+        primaryStage.setTitle("Map app");
         primaryStage.minWidthProperty().bind(viewRoot.minWidthProperty());
         primaryStage.minHeightProperty().bind(viewRoot.minHeightProperty());
     }
