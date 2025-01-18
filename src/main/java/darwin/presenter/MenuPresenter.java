@@ -10,6 +10,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
+import java.lang.reflect.Array;
+
 public class MenuPresenter {
 
     @FXML
@@ -68,21 +70,23 @@ public class MenuPresenter {
         this.app = app;
     }
 
-    private String gatheredArguments(){
-        return formMapHeight.getText() +
-                formMapWidth.getText() +
-                formOptionE.isSelected() +
-                formSpawnPlantPerDay.getText() +
-                formInitialPlantSpawn.getText() +
-                formPlantEnergy.getText() +
-                formInitialAnimalSpawn.getText() +
-                formInitialAnimalEnergy.getText() +
-                formReproductionEnergySufficient.getText() +
-                formReproductionEnergyCost.getText() +
-                formMinMutation.getText() +
-                formMaxMutation.getText() +
-                formCrazy.isSelected() +
-                formGenomeLength.getText();
+    private String[] gatheredArguments(){
+        return new String[] {
+                formMapHeight.getText(),
+                formMapWidth.getText(),
+                String.valueOf(formOptionE.isSelected()),
+                formSpawnPlantPerDay.getText(),
+                formInitialPlantSpawn.getText(),
+                formPlantEnergy.getText(),
+                formInitialAnimalSpawn.getText(),
+                formInitialAnimalEnergy.getText(),
+                formReproductionEnergySufficient.getText(),
+                formReproductionEnergyCost.getText(),
+                formMinMutation.getText(),
+                formMaxMutation.getText(),
+                String.valueOf(formCrazy.isSelected()),
+                formGenomeLength.getText()
+        };
     }
 
 }
