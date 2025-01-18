@@ -1,7 +1,9 @@
 package darwin.presenter;
 
 import darwin.MapApplication;
+import darwin.MenuApplication;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -49,11 +51,21 @@ public class MenuPresenter {
     @FXML
     public Button importConfiguration;
 
+    private MenuApplication app;
+
     @FXML
     public void initialize(){
-        this.createGame.setOnAction(event -> Application.launch(MapApplication.class, gatheredArguments()));
+        this.createGame.setOnAction(event -> {
+            Platform.runLater(() -> {
+                app.openMapStage();
+            });
+        });
         this.exportConfiguration.setOnAction(event -> {});
         this.importConfiguration.setOnAction(event -> {});
+    }
+
+    public void   setApp(MenuApplication app){
+        this.app = app;
     }
 
     private String gatheredArguments(){
