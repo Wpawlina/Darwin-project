@@ -17,31 +17,31 @@ public class MenuPresenter {
     @FXML
     public TextField formMapWidth;
     @FXML
-    public TextField formPlantStart;
+    public TextField formInitialPlantSpawn;
     @FXML
-    public TextField formSpawnPlantsPerDay;
+    public TextField formSpawnPlantPerDay;
     @FXML
     public TextField formPlantEnergy;
     @FXML
-    public TextField formAnimalStart;
+    public TextField formInitialAnimalSpawn;
     @FXML
-    public TextField formAnimalStartEnergy;
+    public TextField formInitialAnimalEnergy;
     @FXML
-    public TextField formAnimalEnergyReproductionDepletion;
+    public TextField formReproductionEnergyCost;
     @FXML
-    public TextField formAnimalEnergyDailyDepletion;
+    public TextField formAnimalEnergyDailyDepletion;//todelete
     @FXML
-    public TextField formAnimalEnergyToReproduce;
+    public TextField formReproductionEnergySufficient;
     @FXML
-    public TextField formAnimalMutationMinimum;
+    public TextField formMinMutation;
     @FXML
-    public TextField formAnimalMutationMaximum;
+    public TextField formMaxMutation;
     @FXML
-    public TextField formAnimalGenotypeLength;
+    public TextField formGenomeLength;
     @FXML
-    public CheckBox formVariantMap;
+    public CheckBox formOptionE;
     @FXML
-    public CheckBox formVariantAnimal;
+    public CheckBox formCrazy;
     @FXML
     public CheckBox formExportStatistics;
     @FXML
@@ -61,18 +61,18 @@ public class MenuPresenter {
     private String gatheredArguments(){
         return formMapHeight.getText() +
                 formMapWidth.getText() +
-                formVariantMap.isSelected() +
-                formSpawnPlantsPerDay.getText() +
-                formPlantStart.getText() +
+                formOptionE.isSelected() +
+                formSpawnPlantPerDay.getText() +
+                formInitialPlantSpawn.getText() +
                 formPlantEnergy.getText() +
-                formAnimalStart.getText() +
-                formAnimalStartEnergy.getText() +
-                formAnimalEnergyToReproduce.getText() +
-                formAnimalEnergyReproductionDepletion.getText() +
-                formAnimalMutationMinimum.getText() +
-                formAnimalMutationMaximum.getText() +
-                formVariantAnimal.isSelected() +
-                formAnimalGenotypeLength.getText();
+                formInitialAnimalSpawn.getText() +
+                formInitialAnimalEnergy.getText() +
+                formReproductionEnergySufficient.getText() +
+                formReproductionEnergyCost.getText() +
+                formMinMutation.getText() +
+                formMaxMutation.getText() +
+                formCrazy.isSelected() +
+                formGenomeLength.getText();
     }
 
 }
