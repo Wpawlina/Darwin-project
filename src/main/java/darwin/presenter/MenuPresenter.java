@@ -52,8 +52,8 @@ public class MenuPresenter {
     @FXML
     public void initialize(){
         this.createGame.setOnAction(event -> Application.launch(MapApplication.class, gatheredArguments()));
-        //this.exportConfiguration.setOnAction();
-        //this.importConfiguration.setOnAction();
+        this.exportConfiguration.setOnAction(event -> {});
+        this.importConfiguration.setOnAction(event -> {});
     }
 
     private String gatheredArguments(){
