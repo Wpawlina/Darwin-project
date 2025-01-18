@@ -15,6 +15,6 @@ public class WorldGUI {
 
 
 
-        Application.launch(MapApplication.class, arguments);
+        Application.launch(MenuApplication.class, null);
     }
 }

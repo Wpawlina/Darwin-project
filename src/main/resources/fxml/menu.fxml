@@ -5,11 +5,11 @@
 <?import javafx.scene.control.ScrollPane?>
 
 <?import java.net.URL?>
-<GridPane fx:controller="darwin.presenter.MapPresenter"
+<GridPane fx:controller="darwin.presenter.MenuPresenter"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10"
           styleClass="block-background">
     <stylesheets>
-        <URL value="css/map.css"/>
+        <URL value="file://menu.css"/>
     </stylesheets>
     <padding>
         <Insets top="25" right="25" bottom="10" left="25"/>
@@ -37,7 +37,7 @@
     <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" fx:id="formPlantStart" text="30"/>
 
     <Label text="Daily plants:" GridPane.columnIndex="2" GridPane.rowIndex="4" styleClass="label-default"/>
-    <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" fx:id="formPlantDaily" text="5"/>
+    <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" fx:id="formSpawnPlantsPerDay" text="5"/>
 
     <Label text="Plant energy:" GridPane.columnIndex="4" GridPane.rowIndex="4" styleClass="label-default"/>
     <TextField GridPane.columnIndex="5" GridPane.rowIndex="4" fx:id="formPlantEnergy" text="15"/>
