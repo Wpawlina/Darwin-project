@@ -213,6 +213,7 @@ abstract public class AbstractMap implements WorldMap{
 
        for(int i = 0; i < no; i++){
                 int draw = random.RandomInt(0, possible.size());
+                if (possible.isEmpty()) break;
                 AbstractAnimal animal = AnimalFactory.createAnimal(crazy, genomeLength, initialEnergy, possible.remove(draw));
                 place(animal, animal.getPosition());
             }
