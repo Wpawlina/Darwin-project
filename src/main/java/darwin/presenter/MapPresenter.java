@@ -193,7 +193,7 @@ public class MapPresenter implements MapChangeListener {
 
 
                 if(map.getFirstAnimalOnSpace(position).isPresent()){
-                    gc.setFill(ColorProvider.getAnimalColor(map.getFirstAnimalOnSpace(position).get().getProperties().getEnergy(),maxEnergy));
+                    gc.setFill(ColorProvider.getAnimalColor(this.simulation,map.getFirstAnimalOnSpace(position).get(),maxEnergy));
                     gc.fillOval(i*CELL_SIZE,j*CELL_SIZE,CELL_SIZE,CELL_SIZE);
                 } else if (map.getPlantOnSpace(position).isPresent()){
                     gc.setFill(ColorProvider.getPlantColor());

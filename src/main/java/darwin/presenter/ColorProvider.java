@@ -1,5 +1,7 @@
 package darwin.presenter;
 
+import darwin.Simulation;
+import darwin.model.animal.AbstractAnimal;
 import javafx.scene.paint.Paint;
 
 import java.awt.*;
@@ -17,14 +19,19 @@ public class ColorProvider{
     }
 
 
-    public static Paint getAnimalColor(int energy, int maxEnergy) {
-        if(energy < maxEnergy/4){
+    public static Paint getAnimalColor(Simulation simulation, AbstractAnimal animal, int maxEnergy) {
+       if(simulation.getTrackedAnimal().orElse(null) == animal){
+           return Paint.valueOf("#FF0000");
+         }
+
+
+        if(animal.getProperties().getEnergy() < maxEnergy/4){
             return Paint.valueOf("#EAB676");
         }
-        if(energy < maxEnergy/2){
+        if(animal.getProperties().getEnergy() < maxEnergy/2){
             return Paint.valueOf("#E28743");
         }
-        if(energy < 3*maxEnergy/4){
+        if(animal.getProperties().getEnergy() < 3*maxEnergy/4){
             return Paint.valueOf("#873E23");
         }
         return Paint.valueOf("#21130D");
