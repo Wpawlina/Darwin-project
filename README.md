@@ -1,38 +1,34 @@
-# Darwin-project
+Darwin World Simulation
+=============================================== 
 
 
-kolejnosc sprawdzanie/ruchu
+<b>Darwin World<b> is a simulation that emulates the evolution of species in a dynamically changing ecosystem. Inspired by the works in "Land of Lisp" by Conrad Barski, an article in "Scientific American", and "Genetic Algorithms in Search, Optimization, and Machine Learning" by David E. Goldberg.
+
+![](images/menu.png)
+![](images/simulation.mp4)
+![](images/simulation2.mp4)
+
+## Features
+<ul>
+    <li><b>Ecosystem: </b> A grid-based world where animals try to survive, reproduce, and evolve.</li>
+    <li><b>Animal Traits</b>Each animal has their specific characteristics, including energy levels that is crucial for survival and reproduction. As well as their genome type which dictates their movements around the world.</li>
+    <li><b>Genetic Algorithm: </b> The animals evolve over time through a genetic algorithm that selects the fittest animals to reproduce and pass on their genes with a possible mutation.</li>
+    <li><b>Real-time observation of the evolution: </b>Users become witnesses of this always changing and adapting environment </li>
+    <li><b>Different variants:</b> Users can also choose to make this world even more unpredictable with two modifications Vital Corpses where plants tend to grow in places where animals died recently , and Little Crazy which makes animals move in more chaotic way </li>
+</ul>
 
 
-1 odejmujemy dni i sprawdzamy czy zyje
-2 ruch
-3 jedzenie 
-4 rozmnazanie sie 
-5 spawn traw
+## Technologies
+<ul>
+    <li>Programing language: Java 21</li>
+    <li>Frontend library: JavaFx</li>
+</ul>
 
 
-klasy:
-
-1. AbstractMap 
-2. Map 
-3. MapWithOptionE 
-4. AbstractAnimal 
-5. Animal 
-6. AnimalCrazy 
-7. Plant 
-8. Vector2D 
-9. Directions Enum 
-10. AnimalState Enum 
-11. Simulation 
-12. World 
-13. Presenter 
-14. CSVWriter 
-15. ConfigWriter 
-16. Config Record 
-17. Boundery Record 
-
-Interface:
-1. WorldMap  
-2. WorldElement 
-3. FileWriter  
+## Authors
+<ul>
+    <li> <b>Wojciech Pawlina</b> - <a href="https://github.com/Wpawlina" target="_blank"></a></li>
+    <li> <b>Szymon Hołysz</b> - <a href="https://github.com/holysz" target="_blank"></a></li>
+</ul>
+ 
 
