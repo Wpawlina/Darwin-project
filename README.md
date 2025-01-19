@@ -30,8 +30,8 @@ Darwin World Simulation
 
 ## Authors
 <ul>
-    <li> <b>Wojciech Pawlina</b> - <a href="https://github.com/Wpawlina" target="_blank"></a></li>
-    <li> <b>Szymon Hołysz</b> - <a href="https://github.com/holysz" target="_blank"></a></li>
+    <li> <b>Wojciech Pawlina</b> - <a href="https://github.com/Wpawlina" target="_blank">Wpawlina</a></li>
+    <li> <b>Szymon Hołysz</b> - <a href="https://github.com/holysz" target="_blank">holysz</a></li>
 </ul>
  
 
