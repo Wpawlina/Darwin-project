@@ -6,13 +6,8 @@ Darwin World Simulation
 
 <img src="images/menu.png" width="500" height="300px" alt="menu">
 
-<video width="700" height="700" src="https://github.com/user-attachments/assets/6d6ec683-1cee-439a-98c4-42a18cc95f1b"/>
-<video width="700" height="700" src="https://github.com/user-attachments/assets/813cbe62-eb36-4560-8b0d-083717a56843"/>
-
-
-
-
-
+<video width="700" height="700" src="https://github.com/user-attachments/assets/6d6ec683-1cee-439a-98c4-42a18cc95f1b" autoplay muted/>
+<video width="700" height="700" src="https://github.com/user-attachments/assets/813cbe62-eb36-4560-8b0d-083717a56843" autoplay muted/>
 
 
 
