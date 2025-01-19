@@ -6,7 +6,7 @@ Darwin World Simulation
 
 <img src="images/menu.png" width="500" height="300" alt="menu">
 <img src="images/simulation.gif" width="700" height="700" alt="menu">
-<img src="images/simulation2.gif" width="700" height="300" alt="menu">
+<img src="images/simulation2.gif" width="700" height="700" alt="menu">
 
 
 
