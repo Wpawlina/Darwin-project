@@ -23,6 +23,7 @@ Darwin World Simulation
             <li><i>Little Crazy: </i>Animals move in a more chaotic way.</li>
         </ul>   
     </li>
+    <li><b>Saving Statistics and Last Configuration:</b>  Users can save their last configuration and import it later, as well as save statistics of the current simulation to a stat.csv file.  </li>
 </ul>
 
 
