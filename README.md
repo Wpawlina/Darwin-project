@@ -16,7 +16,7 @@ Darwin World Simulation
     <li><b>Ecosystem: </b> A grid-based world where animals try to survive, reproduce, and evolve.</li>
     <li><b>Animal Traits: </b>Each animal has specific characteristics, including energy levels crucial for survival and reproduction, as well as a genome type that dictates their movements around the world.</li>
     <li><b>Genetic Algorithm: </b>The animals evolve over time through a genetic algorithm that selects the fittest animals to reproduce and pass on their genes with possible mutations.</li>
-    <li><b>Real-time observation of the evolution: </b>The animals evolve over time through a genetic algorithm that selects the fittest animals to reproduce and pass on their genes with possible mutations.</li>
+    <li><b>Real-time observation of the evolution: </b>Become a witness of this constatly changing world</li>
     <li><b>Different variants:</b> Users can enhance unpredictability with two modifications: 
         <ul>
             <li><i>Vital Corpses: </i>Plants tend to grow in places where animals have recently died. </li>
