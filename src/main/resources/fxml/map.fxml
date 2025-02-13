@@ -11,7 +11,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="700" minWidth="900"
+            minHeight="700" minWidth="1300"
             fx:controller="darwin.presenter.MapPresenter" stylesheets="@../css/map.css">
     <top>
         <VBox prefHeight="100">
@@ -24,6 +24,10 @@
     </top>
     <center>
        <HBox >
+           <VBox fx:id="chart" >
+
+           </VBox>
+
            <VBox>
                <VBox fx:id="simulationStatistics">
 

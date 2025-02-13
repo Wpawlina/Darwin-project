@@ -12,6 +12,9 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
@@ -28,6 +31,8 @@ public class MapPresenter implements MapChangeListener {
 
     @FXML
     private Canvas canvas;
+
+    @FXML VBox chart;
 
     @FXML
     private Button startButton;
@@ -52,9 +57,13 @@ public class MapPresenter implements MapChangeListener {
 
     private Stage stage;
 
+    private XYChart.Series<Number,Number> AnimalSeries;
+    private  XYChart.Series<Number,Number> PlantSeries;
+
     @FXML
     public void initialize() {
         this.startButton.setOnAction(event -> onStartButtonClicked());
+        this.createChart();
     }
 
     @Override
@@ -62,6 +71,7 @@ public class MapPresenter implements MapChangeListener {
         Platform.runLater(()->{
             this.drawMap();
             this.drawStatistics();
+            this.updateChart();
         });
     }
 
@@ -216,25 +226,75 @@ public class MapPresenter implements MapChangeListener {
     }
 
     @FXML
-    private void drawAnimalStatistics(){
-        this.simulation.getTrackedAnimal().ifPresentOrElse((AbstractAnimal animal )-> {
+    private void drawAnimalStatistics()
+    {
+        this.simulation.getTrackedAnimal().ifPresentOrElse((AbstractAnimal animal) -> {
             this.animalStatistics.getChildren().add(new Label("Energy: " + animal.getProperties().getEnergy()));
             this.animalStatistics.getChildren().add(new Label("Genome: " + Arrays.toString(animal.getProperties().getGenome())));
             this.animalStatistics.getChildren().add(new Label("Genome index: " + animal.getProperties().getIndex()));
             this.animalStatistics.getChildren().add(new Label("Plants eaten: " + animal.getProperties().getPlantsEaten()));
             this.animalStatistics.getChildren().add(new Label("Children number: " + animal.countChildren()));
             this.animalStatistics.getChildren().add(new Label("Descendents number: " + animal.getProperties().getChildren().size()));
-            this.animalStatistics.getChildren().add(new Label(animal.getProperties().getState()== AnimalState.ALIVE?"Life span: " + animal.getProperties().getAge():"Date of death: " + animal.getProperties().getDeathDate()));
+            this.animalStatistics.getChildren().add(new Label(animal.getProperties().getState() == AnimalState.ALIVE ? "Life span: " + animal.getProperties().getAge() : "Date of death: " + animal.getProperties().getDeathDate()));
         }, () -> {
             this.animalStatistics.getChildren().add(new Label("No animal is being tracked"));
-            this.animalStatistics.getChildren().add(new Label("Energy: " ));
+            this.animalStatistics.getChildren().add(new Label("Energy: "));
             this.animalStatistics.getChildren().add(new Label("Genome: "));
             this.animalStatistics.getChildren().add(new Label("Genome index: "));
             this.animalStatistics.getChildren().add(new Label("Plants eaten: "));
-            this.animalStatistics.getChildren().add(new Label("Children number: " ));
+            this.animalStatistics.getChildren().add(new Label("Children number: "));
             this.animalStatistics.getChildren().add(new Label("Descendents number: "));
 
         });
+    }
+
+        private void createChart() {
+            // create a chart
+            NumberAxis xAxis = new NumberAxis();
+            NumberAxis yAxis = new NumberAxis();
+            xAxis.setLabel("Day");
+            yAxis.setLabel("Number of animals/plants");
+
+
+            LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+            lineChart.setTitle("Animals and Plants statistics");
+
+
+
+
+            // create a series
+            this.AnimalSeries = new XYChart.Series<>();
+            this.AnimalSeries.setName("Animals");
+
+            this.PlantSeries = new XYChart.Series<>();
+            this.PlantSeries.setName("Plants");
+
+            lineChart.getData().add(this.AnimalSeries);
+            lineChart.getData().add(this.PlantSeries);
+
+            this.chart.getChildren().add(lineChart);
+
+        }
+
+        private void updateChart()
+        {
+            XYChart.Data<Number,Number> data1=new XYChart.Data<>(simulation.getDay(), map.getAliveAnimals().size());
+            XYChart.Data<Number,Number> data2=new XYChart.Data<>(simulation.getDay(), map.countPlant());
+
+            this.AnimalSeries.getData().add(data1);
+            this.PlantSeries.getData().add(data2);
+
+            this.AnimalSeries.getNode().setStyle(" -fx-stroke-width: 1px;");
+            this.PlantSeries.getNode().setStyle("-fx-stroke-width: 1px;");
+
+
+
+            data1.getNode().setStyle(" -fx-background-radius: 2px; -fx-padding: 2px;");
+            data2.getNode().setStyle("-fx-background-radius: 2px; -fx-padding: 2px;");
+
+
+
+        }
 
     }
 
@@ -252,4 +312,4 @@ public class MapPresenter implements MapChangeListener {
 
 
 
-}
+
