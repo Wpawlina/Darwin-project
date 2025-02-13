@@ -4,9 +4,9 @@ Darwin World Simulation
 
 <b>Darwin World</b> is a simulation that emulates the evolution of species in a dynamically changing ecosystem. Inspired by the works in "Land of Lisp" by Conrad Barski, an article in "Scientific American", and "Genetic Algorithms in Search, Optimization, and Machine Learning" by David E. Goldberg.
 
-<img src="images/menu.png" width="700" height="500" alt="menu">
-<img src="images/simulation.gif" width="700" height="400" alt="menu">
-<img src="images/simulation2.gif" width="700" height="400" alt="menu">
+<img src="images/menu.png" width="600" height="400" alt="menu">
+<img src="images/simulation.gif" width="600" height="350" alt="menu">
+<img src="images/simulation2.gif" width="600" height="350" alt="menu">
 
 
 
