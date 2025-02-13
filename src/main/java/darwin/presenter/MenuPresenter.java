@@ -4,6 +4,7 @@ import darwin.CSVWriter;
 import darwin.MenuApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -71,7 +72,15 @@ public class MenuPresenter {
 
         this.createGame.setOnAction(event -> {
             Platform.runLater(() -> {
-                app.openMapStage(this.gatheredArguments());
+                if(validateArguments(this.gatheredArguments()))
+                {
+                    app.openMapStage(this.gatheredArguments());
+                }
+                else
+                {
+                    displayInputErrorAlert();
+                }
+
             });
         });
         this.exportConfiguration.setOnAction(event -> confWriter.writeLine(gatheredArguments()));
@@ -104,6 +113,42 @@ public class MenuPresenter {
                 String.valueOf(formExportStatistics.isSelected())
         };
     }
+
+    private void displayInputErrorAlert()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Invalid input");
+        alert.setHeaderText("Invalid input");
+        alert.setContentText("Please enter valid numbers in all fields");
+        alert.showAndWait();
+    }
+
+
+    private boolean validateArguments(String[] args){
+        if (args.length != 15) return false;
+        try {
+            Integer.parseInt(args[0]);
+            Integer.parseInt(args[1]);
+
+            Integer.parseInt(args[3]);
+            Integer.parseInt(args[4]);
+            Integer.parseInt(args[5]);
+            Integer.parseInt(args[6]);
+            Integer.parseInt(args[7]);
+            Integer.parseInt(args[8]);
+            Integer.parseInt(args[9]);
+            Integer.parseInt(args[10]);
+            Integer.parseInt(args[11]);
+
+            Integer.parseInt(args[13]);
+
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
+
 
     private void setArguments(String[] args){
         formMapHeight.setText(args[0]);

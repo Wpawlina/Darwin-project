@@ -50,7 +50,8 @@ public class MenuApplication extends Application {
             ArrayList<String> args= new ArrayList<String>(Arrays.asList(arguments));
             SimulationConfig config = new SimulationConfig(
                     Integer.parseInt(args.getFirst()),
-                    Integer.parseInt(args.get(1)),Boolean.parseBoolean(args.get(2)),
+                    Integer.parseInt(args.get(1)),
+                    Boolean.parseBoolean(args.get(2)),
                     Integer.parseInt(args.get(3)),
                     Integer.parseInt(args.get(4)),
                     Integer.parseInt(args.get(5)),
@@ -91,13 +92,7 @@ public class MenuApplication extends Application {
     }
 
 
-    private void configureStage(Stage primaryStage, GridPane viewRoot) {
-        var scene = new Scene(viewRoot);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Menu app");
-        primaryStage.minWidthProperty().bind(viewRoot.minWidthProperty());
-        primaryStage.minHeightProperty().bind(viewRoot.minHeightProperty());
-    }
+
 
     private void configureMapStage(Stage primaryStage, BorderPane viewRoot) {
         var scene = new Scene(viewRoot);
